@@ -1,0 +1,104 @@
+/* ============================================================
+   TOKENS DE DESIGN — Meu INSS acessível
+   Paleta e medidas pensadas para público idoso:
+   - contraste mínimo 4.5:1 em texto (WCAG 2.2 — 1.4.3), a maioria acima de 7:1
+   - alvos de toque de no mínimo 48x48px (WCAG 2.5.8 / eMAG 3.5)
+   - tudo em rem, para a fonte escalar junto com o controle "Aumentar letra"
+   ============================================================ */
+
+:root {
+  /* --- Cores: tema claro (padrão) --- */
+  --cor-fundo: #ffffff;
+  --cor-fundo-alt: #eef2f8; /* fundo de seções */
+  --cor-superficie: #ffffff; /* cartões */
+  --cor-texto: #16181d; /* 16.9:1 sobre branco */
+  --cor-texto-suave: #41454f; /* 9.8:1 sobre branco */
+  --cor-borda: #5b6170; /* 6.1:1 — borda perceptível, não só decorativa */
+  --cor-borda-suave: #c4cad6;
+
+  --cor-primaria: #10418c; /* 9.0:1 sobre branco */
+  --cor-primaria-escura: #0a2c63;
+  --cor-primaria-clara: #e8eefb;
+  --cor-link: #0f3f87;
+
+  --cor-erro: #a4160b; /* 7.0:1 sobre branco */
+  --cor-erro-fundo: #fdeceb;
+  --cor-sucesso: #15601f;
+  --cor-sucesso-fundo: #e8f5e9;
+  --cor-atencao: #5a4100;
+  --cor-atencao-fundo: #fff5d6;
+
+  --cor-foco: #11306e;
+  --cor-foco-halo: #ffcd07;
+
+  /* --- Tipografia --- */
+  --fonte: "Rawline", "Segoe UI", Roboto, system-ui, -apple-system, sans-serif;
+  --txt-xs: 0.875rem;
+  --txt-sm: 1rem;
+  --txt-md: 1.125rem; /* corpo padrão: ~20px já com a escala base */
+  --txt-lg: 1.375rem;
+  --txt-xl: 1.75rem;
+  --txt-2xl: 2.125rem;
+  --peso-normal: 400;
+  --peso-medio: 600;
+  --peso-forte: 700;
+  --altura-linha: 1.6; /* WCAG 1.4.12 — espaçamento confortável para leitura */
+
+  /* --- Espaçamento --- */
+  --esp-1: 0.25rem;
+  --esp-2: 0.5rem;
+  --esp-3: 0.75rem;
+  --esp-4: 1rem;
+  --esp-5: 1.5rem;
+  --esp-6: 2rem;
+  --esp-7: 3rem;
+
+  /* --- Formas --- */
+  --raio: 0.75rem;
+  --raio-grande: 1.25rem;
+  --raio-pill: 999px;
+  --sombra: 0 1px 3px rgba(0, 0, 0, 0.14), 0 3px 10px rgba(0, 0, 0, 0.07);
+  --borda-largura: 2px;
+
+  /* --- Alvo de toque mínimo --- */
+  --alvo-min: 3rem; /* 48px na escala base */
+  --largura-max: 34rem; /* leitura confortável, layout de celular */
+}
+
+/* --- Escala de fonte: controle "A+ Aumentar letra" --- */
+html[data-fonte="1"] {
+  font-size: 112.5%;
+} /* 18px */
+html[data-fonte="2"] {
+  font-size: 125%;
+} /* 20px */
+html[data-fonte="3"] {
+  font-size: 137.5%;
+} /* 22px */
+
+/* --- Tema de alto contraste (eMAG 1.9 / WCAG 1.4.6) --- */
+html[data-tema="alto-contraste"] {
+  --cor-fundo: #000000;
+  --cor-fundo-alt: #000000;
+  --cor-superficie: #000000;
+  --cor-texto: #ffffff;
+  --cor-texto-suave: #ffffff;
+  --cor-borda: #ffdd00;
+  --cor-borda-suave: #ffdd00;
+
+  --cor-primaria: #ffdd00;
+  --cor-primaria-escura: #ffdd00;
+  --cor-primaria-clara: #000000;
+  --cor-link: #ffdd00;
+
+  --cor-erro: #ff8c7a;
+  --cor-erro-fundo: #000000;
+  --cor-sucesso: #7bff8f;
+  --cor-sucesso-fundo: #000000;
+  --cor-atencao: #ffdd00;
+  --cor-atencao-fundo: #000000;
+
+  --cor-foco: #ffffff;
+  --cor-foco-halo: #ffdd00;
+  --sombra: none;
+}

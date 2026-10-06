@@ -1,0 +1,670 @@
+/* ============================================================
+   COMPONENTES
+   Regra geral: nada menor que --alvo-min (48px) é clicável,
+   e nenhuma informação é passada só por cor (WCAG 1.4.1).
+   ============================================================ */
+
+/* ---------- Barra de acessibilidade ---------- */
+.barra-a11y {
+  display: flex;
+  gap: var(--esp-2);
+  padding: var(--esp-2);
+  background: var(--cor-primaria-escura);
+  border-bottom: var(--borda-largura) solid var(--cor-borda);
+}
+
+html[data-tema="alto-contraste"] .barra-a11y {
+  background: #000;
+}
+
+.barra-a11y__botao {
+  flex: 1;
+  min-height: var(--alvo-min);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  padding: var(--esp-2);
+  background: transparent;
+  color: #fff;
+  border: var(--borda-largura) solid #ffffff;
+  border-radius: var(--raio);
+  font-size: var(--txt-xs);
+  font-weight: var(--peso-medio);
+  line-height: 1.2;
+  text-align: center;
+  cursor: pointer;
+}
+
+html[data-tema="alto-contraste"] .barra-a11y__botao {
+  color: var(--cor-primaria);
+  border-color: var(--cor-primaria);
+}
+
+.barra-a11y__botao:hover {
+  background: rgba(255, 255, 255, 0.18);
+}
+
+/* Estado ligado: cor + preenchimento + texto "ligado" no rótulo acessível */
+.barra-a11y__botao[aria-pressed="true"] {
+  background: #fff;
+  color: var(--cor-primaria-escura);
+}
+
+html[data-tema="alto-contraste"] .barra-a11y__botao[aria-pressed="true"] {
+  background: var(--cor-primaria);
+  color: #000;
+}
+
+/* ---------- Cabeçalho ---------- */
+.cabecalho {
+  padding: var(--esp-5) var(--esp-4) var(--esp-4);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--esp-3);
+  background: var(--cor-fundo);
+}
+
+.cabecalho--interno {
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  text-align: left;
+  gap: var(--esp-4);
+  border-bottom: var(--borda-largura) solid var(--cor-borda-suave);
+}
+
+.cabecalho__marca {
+  font-size: var(--txt-sm);
+  font-weight: var(--peso-forte);
+  color: var(--cor-texto-suave);
+}
+
+.cabecalho__subtitulo {
+  color: var(--cor-texto-suave);
+  max-width: 28rem;
+}
+
+/* ---------- Botões ---------- */
+.botao {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--esp-3);
+  min-height: var(--alvo-min);
+  padding: var(--esp-3) var(--esp-5);
+  border-radius: var(--raio-pill);
+  border: var(--borda-largura) solid transparent;
+  font-size: var(--txt-md);
+  font-weight: var(--peso-forte);
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.botao--bloco {
+  width: 100%;
+}
+
+.botao--primario {
+  background: var(--cor-primaria);
+  color: #fff;
+  border-color: var(--cor-primaria);
+}
+
+html[data-tema="alto-contraste"] .botao--primario {
+  color: #000;
+}
+
+.botao--primario:hover {
+  background: var(--cor-primaria-escura);
+}
+
+.botao--secundario {
+  background: var(--cor-fundo);
+  color: var(--cor-primaria);
+  border-color: var(--cor-primaria);
+}
+
+.botao--secundario:hover {
+  background: var(--cor-primaria-clara);
+}
+
+.botao:disabled {
+  opacity: 1; /* opacidade baixa derruba o contraste; usamos cores próprias */
+  background: #e3e5ea;
+  color: #4a4d55;
+  border-color: #4a4d55;
+  cursor: not-allowed;
+}
+
+/* ---------- Caixas de destaque (avisos, ajuda, informação) ---------- */
+.caixa {
+  border: var(--borda-largura) solid var(--cor-borda-suave);
+  border-left-width: 6px;
+  border-radius: var(--raio);
+  padding: var(--esp-4);
+  background: var(--cor-superficie);
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-3);
+}
+
+.caixa--info {
+  background: var(--cor-primaria-clara);
+  border-color: var(--cor-primaria);
+}
+
+.caixa--ajuda {
+  background: var(--cor-atencao-fundo);
+  border-color: var(--cor-atencao);
+}
+
+.caixa--sucesso {
+  background: var(--cor-sucesso-fundo);
+  border-color: var(--cor-sucesso);
+}
+
+.caixa__titulo {
+  display: flex;
+  align-items: center;
+  gap: var(--esp-3);
+  font-size: var(--txt-lg);
+  font-weight: var(--peso-forte);
+}
+
+.caixa ol,
+.acordeao__painel ol {
+  padding-left: var(--esp-5);
+  list-style: decimal;
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-2);
+}
+
+/* ---------- Acordeão ---------- */
+.acordeao {
+  border: var(--borda-largura) solid var(--cor-primaria);
+  border-radius: var(--raio);
+  background: var(--cor-primaria-clara);
+  overflow: hidden;
+}
+
+.acordeao__gatilho {
+  width: 100%;
+  min-height: var(--alvo-min);
+  display: flex;
+  align-items: center;
+  gap: var(--esp-3);
+  padding: var(--esp-4);
+  background: transparent;
+  border: 0;
+  font-size: var(--txt-lg);
+  font-weight: var(--peso-forte);
+  text-align: left;
+  color: var(--cor-texto);
+  cursor: pointer;
+}
+
+.acordeao__gatilho:hover {
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+}
+
+.acordeao__seta {
+  margin-left: auto;
+  flex: none;
+  transition: transform 0.2s ease-out;
+}
+
+.acordeao__gatilho[aria-expanded="true"] .acordeao__seta {
+  transform: rotate(180deg);
+}
+
+.acordeao__painel {
+  padding: 0 var(--esp-4) var(--esp-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-3);
+}
+
+/* ---------- Avisos (carrossel sem movimento automático) ---------- */
+.aviso {
+  border: var(--borda-largura) solid var(--cor-borda-suave);
+  border-left: 6px solid var(--cor-primaria);
+  border-radius: var(--raio);
+  padding: var(--esp-4);
+  background: var(--cor-superficie);
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-3);
+}
+
+.etiqueta {
+  align-self: flex-start;
+  padding: var(--esp-1) var(--esp-3);
+  border-radius: var(--raio-pill);
+  background: var(--cor-atencao-fundo);
+  color: var(--cor-atencao);
+  border: var(--borda-largura) solid var(--cor-atencao);
+  font-size: var(--txt-xs);
+  font-weight: var(--peso-forte);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.avisos__controles {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--esp-3);
+}
+
+/* O contador fica em uma linha própria, acima dos botões: assim nada quebra
+   quando a pessoa aumenta a letra (WCAG 1.4.4 — zoom até 200%). */
+.avisos__contador {
+  order: -1;
+  flex: 1 0 100%;
+  text-align: center;
+  font-size: var(--txt-sm);
+  font-weight: var(--peso-medio);
+  color: var(--cor-texto-suave);
+}
+
+.botao--navegacao {
+  min-width: var(--alvo-min);
+  padding: var(--esp-3) var(--esp-4);
+  font-size: var(--txt-sm);
+}
+
+/* ---------- Lista de serviços ---------- */
+.servicos {
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-3);
+}
+
+.servico {
+  width: 100%;
+  min-height: 4.5rem;
+  display: flex;
+  align-items: center;
+  gap: var(--esp-4);
+  padding: var(--esp-4);
+  background: var(--cor-superficie);
+  border: var(--borda-largura) solid var(--cor-borda-suave);
+  border-radius: var(--raio);
+  box-shadow: var(--sombra);
+  color: var(--cor-texto);
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.servico:hover {
+  background: var(--cor-primaria-clara);
+  border-color: var(--cor-primaria);
+}
+
+.servico__icone {
+  flex: none;
+  width: 3rem;
+  height: 3rem;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--cor-primaria-clara);
+  color: var(--cor-primaria);
+  border: var(--borda-largura) solid var(--cor-primaria);
+}
+
+.servico__texto {
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-1);
+}
+
+.servico__nome {
+  font-size: var(--txt-md);
+  font-weight: var(--peso-forte);
+}
+
+.servico__descricao {
+  font-size: var(--txt-sm);
+  color: var(--cor-texto-suave);
+}
+
+.servico__seta {
+  margin-left: auto;
+  flex: none;
+  color: var(--cor-primaria);
+}
+
+/* ---------- Formulário ---------- */
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-2);
+}
+
+.campo__rotulo {
+  font-size: var(--txt-lg);
+  font-weight: var(--peso-forte);
+}
+
+.campo__dica {
+  font-size: var(--txt-sm);
+  color: var(--cor-texto-suave);
+}
+
+.campo__entrada {
+  min-height: 3.75rem;
+  padding: var(--esp-3) var(--esp-4);
+  font-size: var(--txt-xl);
+  letter-spacing: 0.04em;
+  background: var(--cor-fundo);
+  border: var(--borda-largura) solid var(--cor-borda);
+  border-radius: var(--raio);
+}
+
+.campo__entrada::placeholder {
+  color: #5b6170;
+}
+
+.campo__entrada[aria-invalid="true"] {
+  border-color: var(--cor-erro);
+  border-width: 3px;
+  background: var(--cor-erro-fundo);
+}
+
+.campo__erro {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--esp-3);
+  padding: var(--esp-3);
+  border: var(--borda-largura) solid var(--cor-erro);
+  border-radius: var(--raio);
+  background: var(--cor-erro-fundo);
+  color: var(--cor-erro);
+  font-weight: var(--peso-medio);
+}
+
+.campo__erro svg {
+  flex: none;
+  margin-top: 0.15em;
+}
+
+/* ---------- Passos do formulário ---------- */
+.passos {
+  font-size: var(--txt-sm);
+  font-weight: var(--peso-medio);
+  color: var(--cor-texto-suave);
+}
+
+.barra-progresso {
+  height: 0.75rem;
+  border-radius: var(--raio-pill);
+  background: var(--cor-borda-suave);
+  overflow: hidden;
+  border: 1px solid var(--cor-borda);
+}
+
+.barra-progresso__preenchimento {
+  height: 100%;
+  background: var(--cor-primaria);
+}
+
+/* ---------- Outras formas de entrar ---------- */
+.opcao {
+  display: flex;
+  gap: var(--esp-4);
+  align-items: center;
+  width: 100%;
+  min-height: 4.5rem;
+  padding: var(--esp-4);
+  background: var(--cor-superficie);
+  border: var(--borda-largura) solid var(--cor-borda-suave);
+  border-radius: var(--raio);
+  text-align: left;
+  color: var(--cor-texto);
+  cursor: pointer;
+}
+
+.opcao:hover {
+  border-color: var(--cor-primaria);
+  background: var(--cor-primaria-clara);
+}
+
+/* ---------- Rodapé ---------- */
+.rodape {
+  padding: var(--esp-5) var(--esp-4);
+  background: var(--cor-fundo-alt);
+  border-top: var(--borda-largura) solid var(--cor-borda-suave);
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-3);
+  font-size: var(--txt-sm);
+  color: var(--cor-texto-suave);
+}
+
+.rodape a {
+  display: inline-block;
+  min-height: var(--alvo-min);
+  line-height: var(--alvo-min);
+}
+
+/* ---------- Mensagem de rota/estado (região viva) ---------- */
+.aviso-sistema {
+  padding: var(--esp-3) var(--esp-4);
+  background: var(--cor-sucesso-fundo);
+  border: var(--borda-largura) solid var(--cor-sucesso);
+  color: var(--cor-sucesso);
+  border-radius: var(--raio);
+  font-weight: var(--peso-medio);
+}
+
+/* ---------- Campo com botão ao lado (mostrar senha) ---------- */
+.campo__com-botao {
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-2);
+}
+
+.campo__botao {
+  align-self: flex-start;
+  font-size: var(--txt-sm);
+  padding: var(--esp-2) var(--esp-4);
+}
+
+.botao-texto {
+  background: none;
+  border: 0;
+  padding: var(--esp-2) 0;
+  min-height: var(--alvo-min);
+  color: var(--cor-link);
+  font-weight: var(--peso-medio);
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.25em;
+  cursor: pointer;
+}
+
+.confirmacao {
+  padding: var(--esp-3) var(--esp-4);
+  background: var(--cor-fundo-alt);
+  border: var(--borda-largura) solid var(--cor-borda-suave);
+  border-radius: var(--raio);
+}
+
+/* ---------- Barra superior do app logado ---------- */
+.topo {
+  background: var(--cor-primaria);
+  color: #fff;
+  border-bottom: var(--borda-largura) solid var(--cor-borda);
+}
+
+html[data-tema="alto-contraste"] .topo {
+  background: #000;
+  color: var(--cor-primaria);
+}
+
+.topo__barra {
+  display: flex;
+  align-items: stretch;
+  gap: var(--esp-2);
+  padding: var(--esp-2);
+}
+
+.topo__titulo {
+  flex: 1;
+  align-self: center;
+  font-size: var(--txt-lg);
+  font-weight: var(--peso-forte);
+}
+
+.topo__acao {
+  min-width: var(--alvo-min);
+  min-height: var(--alvo-min);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  padding: var(--esp-2);
+  background: transparent;
+  color: inherit;
+  border: var(--borda-largura) solid transparent;
+  border-radius: var(--raio);
+  font-size: var(--txt-xs);
+  font-weight: var(--peso-medio);
+  line-height: 1.1;
+  cursor: pointer;
+}
+
+.topo__acao:hover {
+  background: rgba(255, 255, 255, 0.18);
+  border-color: #fff;
+}
+
+html[data-tema="alto-contraste"] .topo__acao:hover {
+  background: var(--cor-primaria);
+  color: #000;
+}
+
+.topo__acao[aria-expanded="true"] {
+  background: #fff;
+  color: var(--cor-primaria);
+}
+
+html[data-tema="alto-contraste"] .topo__acao[aria-expanded="true"] {
+  background: var(--cor-primaria);
+  color: #000;
+}
+
+.topo__icone-com-selo {
+  position: relative;
+  display: inline-flex;
+}
+
+/* O selo é só reforço visual: a contagem já está no aria-label do botão. */
+.topo__selo {
+  position: absolute;
+  top: -6px;
+  right: -8px;
+  min-width: 1.25rem;
+  padding: 0 0.3em;
+  border-radius: var(--raio-pill);
+  background: #ffcd07;
+  color: #16181d;
+  font-size: var(--txt-xs);
+  font-weight: var(--peso-forte);
+  line-height: 1.25rem;
+  text-align: center;
+}
+
+.menu-painel {
+  border-top: var(--borda-largura) solid rgba(255, 255, 255, 0.4);
+  padding: var(--esp-2);
+}
+
+.menu-painel ul {
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-1);
+}
+
+.menu-painel a,
+.menu-painel button {
+  width: 100%;
+  min-height: var(--alvo-min);
+  display: flex;
+  align-items: center;
+  gap: var(--esp-3);
+  padding: var(--esp-3) var(--esp-4);
+  background: transparent;
+  color: inherit;
+  border: var(--borda-largura) solid transparent;
+  border-radius: var(--raio);
+  font-size: var(--txt-md);
+  font-weight: var(--peso-medio);
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.menu-painel a:hover,
+.menu-painel button:hover {
+  background: rgba(255, 255, 255, 0.18);
+  border-color: currentColor;
+}
+
+/* ---------- Painel logado ---------- */
+.saudacao {
+  font-size: var(--txt-xl);
+}
+
+.grade-servicos {
+  display: grid;
+  /* minmax em rem: quando a letra aumenta, os cartões passam sozinhos
+     para uma coluna só, sem quebrar o texto (WCAG 1.4.10 — refluxo). */
+  grid-template-columns: repeat(auto-fit, minmax(9.5rem, 1fr));
+  gap: var(--esp-3);
+}
+
+.cartao-servico {
+  height: 100%;
+  overflow-wrap: break-word;
+  min-height: 9rem;
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-2);
+  padding: var(--esp-4);
+  background: var(--cor-superficie);
+  border: var(--borda-largura) solid var(--cor-borda-suave);
+  border-radius: var(--raio);
+  box-shadow: var(--sombra);
+  color: var(--cor-texto);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.cartao-servico:hover {
+  background: var(--cor-primaria-clara);
+  border-color: var(--cor-primaria);
+}
+
+.assistente__topo {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--esp-4);
+}
+
+.assistente__avatar {
+  flex: none;
+  width: 4rem;
+  height: 4rem;
+}
