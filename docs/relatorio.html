@@ -1,0 +1,320 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<title>Meu INSS acessível — Relatório de acessibilidade e WAI-ARIA</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@400;600;700&display=swap" />
+<style>
+  @page { size: A4; margin: 18mm 16mm 18mm; }
+  :root { --azul:#1351b4; --azul-escuro:#0c326f; --verde:#00875a; --amarelo:#f2b84b; --cinza:#474d59; --borda:#d3d9e3; --fundo:#f3f6fb; }
+  * { box-sizing: border-box; }
+  body { font-family: "Atkinson Hyperlegible Next", "Segoe UI", sans-serif; color:#1b1f27; font-size: 10.5pt; line-height: 1.55; margin:0; }
+  h1,h2,h3 { color: var(--azul-escuro); line-height:1.25; margin: 0 0 .5em; }
+  h1 { font-size: 26pt; }
+  h2 { font-size: 16pt; margin-top: 1.4em; padding-bottom: .3em; border-bottom: 3px solid; border-image: linear-gradient(90deg,var(--verde) 0 33%,var(--amarelo) 33% 66%,var(--azul) 66%) 1; }
+  h3 { font-size: 12.5pt; margin-top: 1.1em; }
+  p { margin: 0 0 .7em; }
+  code { font-family: "JetBrains Mono", Consolas, monospace; font-size: 9pt; background: #e8f0fc; color: var(--azul-escuro); padding: .05em .35em; border-radius: 4px; }
+  table { width:100%; border-collapse: collapse; margin: .4em 0 1em; font-size: 9.5pt; page-break-inside: avoid; }
+  th, td { border: 1px solid var(--borda); padding: .4em .55em; text-align:left; vertical-align: top; }
+  th { background: var(--fundo); color: var(--azul-escuro); }
+  ul, ol { margin: 0 0 .8em; padding-left: 1.3em; }
+  li { margin-bottom: .25em; }
+  figure { margin: .6em 0 1em; page-break-inside: avoid; }
+  figure img { max-width: 100%; max-height: 80mm; width: auto; margin: 0 auto; border: 1px solid var(--borda); border-radius: 8px; display:block; }
+  figcaption { font-size: 9pt; color: var(--cinza); margin-top: .3em; }
+  .lado { display:grid; grid-template-columns: 1fr 1fr; gap: 12px; align-items: start; }
+  .lado-estreito { display:grid; grid-template-columns: 1.6fr 1fr; gap: 12px; align-items:start; }
+  .caixa { background: var(--fundo); border-left: 5px solid var(--azul); padding: .7em 1em; border-radius: 6px; margin: .6em 0 1em; page-break-inside: avoid; }
+  .caixa--verde { border-left-color: var(--verde); background:#e6f4ea; }
+  .caixa--amarela { border-left-color: #c99400; background:#fff4d6; }
+  .widget { margin-top: 1.5em; }
+  .titulo-widget { break-inside: avoid; page-break-inside: avoid; break-after: avoid; }
+  h2, h3 { break-after: avoid; page-break-after: avoid; }
+  ul, .caixa { break-inside: avoid; }
+  .etiqueta { display:inline-block; background: var(--azul); color:#fff; font-weight:700; font-size: 8.5pt; padding: .1em .6em; border-radius: 99px; letter-spacing:.04em; text-transform: uppercase; }
+  .capa { height: 255mm; display:flex; flex-direction:column; justify-content:center; gap: 14px; }
+  .capa .faixa { height: 10px; border-radius: 99px; background: linear-gradient(90deg,var(--verde) 0 33%,var(--amarelo) 33% 66%,var(--azul) 66%); width: 60%; }
+  .capa p.sub { font-size: 14pt; color: var(--cinza); max-width: 34em; }
+  .capa dl { display:grid; grid-template-columns: max-content 1fr; gap: 4px 14px; font-size: 11pt; margin-top: 18px; }
+  .capa dt { font-weight:700; color: var(--azul-escuro); }
+  .capa dd { margin:0; }
+  .tecla { display:inline-block; border:1px solid #9aa3b2; border-bottom-width:2px; border-radius:4px; padding:0 .35em; font-size:8.5pt; background:#fff; white-space:nowrap; }
+  .quebra { page-break-before: always; }
+</style>
+</head>
+<body>
+
+<section class="capa">
+  <img src="../public/favicon.svg" alt="Marca do INSS" style="width:150px" />
+  <div class="faixa"></div>
+  <h1>Meu INSS acessível</h1>
+  <p class="sub">Releitura das telas de entrada do Meu INSS para o público idoso, com
+  quatro componentes WAI-ARIA, seguindo a WCAG 2.2 (nível AA) e o eMAG 3.1.</p>
+  <dl>
+    <dt>Trabalho</dt><dd>Projeto de acessibilidade digital</dd>
+    <dt>Integrantes</dt><dd>__________________________________________</dd>
+    <dt>Tecnologia</dt><dd>React 19 + Vite, sem bibliotecas de componentes</dd>
+    <dt>Data</dt><dd>Novembro de 2026</dd>
+    <dt>Aviso</dt><dd>Projeto de estudo, sem ligação oficial com o INSS ou o gov.br.</dd>
+  </dl>
+</section>
+
+<h2 class="quebra">1. Objetivo e público</h2>
+<p>O Meu INSS é usado majoritariamente por aposentados, pensionistas e pessoas
+perto de se aposentar. É um público que, com a idade, costuma ter <strong>visão
+reduzida</strong>, <strong>tremor nas mãos</strong>, <strong>memória de curto prazo
+mais curta</strong> e <strong>menos familiaridade com ícones e gestos</strong> de
+aplicativos. Nosso objetivo foi refazer as telas de entrada (início, CPF, senha e
+área logada) mantendo a identidade visual do INSS e do gov.br — marca verde,
+amarela e azul, azul <code>#1351B4</code> do Padrão Digital de Governo — mas
+resolvendo essas barreiras.</p>
+
+<figure class="lado-estreito">
+  <img src="img/inicio-computador.png" alt="Tela inicial no computador" />
+  <img src="img/inicio-celular.png" alt="Tela inicial no celular" />
+  <figcaption>Tela inicial no computador e no celular: faixa gov.br com controles de acessibilidade, botão principal grande, ajuda humana (Central 135) sempre à vista.</figcaption>
+</figure>
+
+<h3>Dificuldades do idoso e o que fizemos</h3>
+<table>
+  <tr><th style="width:30%">Dificuldade</th><th>Solução na interface</th><th style="width:16%">WCAG</th></tr>
+  <tr><td>Enxergar texto pequeno ou claro</td><td>Letra base de 18px, três tamanhos (Normal, Grande, Maior) escolhidos num grupo de opções; contraste de texto acima de 7:1 na maior parte; tema de alto contraste preto/amarelo; fonte <em>Atkinson Hyperlegible</em>, criada para baixa visão (diferencia I/l/1 e 0/O — importante para CPF).</td><td>1.4.3, 1.4.4, 1.4.6</td></tr>
+  <tr><td>Acertar alvos pequenos com a mão trêmula</td><td>Todo controle clicável tem no mínimo 48×48px; opções de rádio são cartões inteiros clicáveis, não bolinhas de 16px.</td><td>2.5.8</td></tr>
+  <tr><td>Entender ícones sozinhos</td><td>Todo ícone vem com texto visível ("Buscar", "Avisos", "Menu"). Ícones são decorativos (<code>aria-hidden</code>).</td><td>1.1.1, 2.5.3</td></tr>
+  <tr><td>Conteúdo que se move sozinho</td><td>O carrossel automático virou um conjunto de <strong>abas</strong>: nada muda sem a pessoa pedir.</td><td>2.2.2, 3.2.1</td></tr>
+  <tr><td>Errar e não saber o que fazer</td><td>Mensagens que ensinam ("Falta 1 número no CPF. Você digitou 10 de 11"); o foco volta ao campo; erro com ícone, borda e texto, não só cor.</td><td>3.3.1, 3.3.3, 1.4.1</td></tr>
+  <tr><td>Sair da conta sem querer</td><td><strong>Diálogo de confirmação</strong> com o foco na opção segura ("Não, continuar aqui").</td><td>3.3.4</td></tr>
+  <tr><td>Perder-se em muitos menus</td><td><strong>Menu com subitens</strong> agrupando serviços em 3 grupos; passo a passo visível "Etapa 1 de 2".</td><td>2.4.5, 2.4.8</td></tr>
+  <tr><td>Texto que estoura a tela ao ampliar</td><td>Layout em <code>rem</code> e grades elásticas: com a letra no máximo, abas e cartões passam para uma coluna, sem rolagem lateral.</td><td>1.4.10</td></tr>
+</table>
+
+<h2>2. Por que WAI-ARIA</h2>
+<p><strong>WAI-ARIA</strong> (Accessible Rich Internet Applications) é a especificação
+do W3C que permite <em>descrever</em> para tecnologias assistivas — leitores de tela
+como NVDA, TalkBack e VoiceOver — componentes que o HTML não tem prontos: abas,
+menus, grupos de opções estilizados, diálogos. Ela atua em três frentes:</p>
+<ul>
+  <li><strong>Papéis (roles)</strong> — o que o elemento é: <code>role="tab"</code>, <code>role="menuitem"</code>.</li>
+  <li><strong>Estados</strong> — como ele está agora, e mudam com a interação: <code>aria-checked</code>, <code>aria-selected</code>, <code>aria-expanded</code>.</li>
+  <li><strong>Propriedades</strong> — relações e características: <code>aria-labelledby</code>, <code>aria-controls</code>, <code>aria-haspopup</code>, <code>aria-modal</code>.</li>
+</ul>
+<div class="caixa caixa--amarela"><strong>ARIA não faz nada sozinho.</strong> Ele só
+muda o que o leitor de tela anuncia. O comportamento de teclado (setas, Esc, foco)
+precisa ser programado. Por isso cada componente abaixo segue o padrão
+correspondente do <em>ARIA Authoring Practices Guide</em> (APG) do W3C, incluindo o
+teclado. Também usamos a regra “estilizar pelo atributo”: o CSS desenha o estado a
+partir de <code>[aria-checked="true"]</code>, <code>[aria-selected="true"]</code> etc.,
+então o que se vê é sempre o mesmo que o leitor de tela fala.</div>
+
+<p>Implementamos <strong>quatro</strong> componentes ARIA completos:</p>
+<table>
+  <tr><th>Componente</th><th>Onde aparece</th><th>Arquivo</th></tr>
+  <tr><td>1. Grupo de opções (<code>radiogroup</code>)</td><td>Tamanho da letra (topo de todas as telas) e "Como você quer entrar?" (tela de CPF)</td><td><code>GrupoOpcoes.jsx</code></td></tr>
+  <tr><td>2. Menu com subitens (<code>menubar</code> / <code>menu</code>)</td><td>Menu principal da área logada</td><td><code>MenuPrincipal.jsx</code></td></tr>
+  <tr><td>3. Abas (<code>tablist</code>)</td><td>Avisos importantes, na tela inicial</td><td><code>Avisos.jsx</code></td></tr>
+  <tr><td>4. Diálogo modal (<code>dialog</code>)</td><td>Confirmação "Quer mesmo sair da conta?"</td><td><code>Dialogo.jsx</code></td></tr>
+</table>
+
+<!-- ====================== WIDGET 1 ====================== -->
+<section class="widget quebra">
+<div class="titulo-widget"><span class="etiqueta">Componente ARIA 1</span>
+<h2>Grupo de opções — <code>role="radiogroup"</code></h2></div>
+<p><strong>Função:</strong> permitir escolher <em>uma</em> opção entre várias. Usamos
+em dois lugares: o <strong>tamanho da letra</strong> (Normal, Grande, Maior) e a
+<strong>forma de entrar</strong> (CPF e senha, banco, aplicativo gov.br, certificado
+digital).</p>
+<p><strong>Por que ARIA aqui:</strong> o <code>&lt;input type="radio"&gt;</code> nativo é
+uma bolinha de ~16px, difícil de acertar e de ver. Fizemos cartões e “pílulas”
+grandes e clicáveis por inteiro. Visualmente são rádios, mas para o navegador seriam
+apenas <code>&lt;div&gt;</code>s; o ARIA devolve o significado de “botão de opção”.
+Antes, o tamanho da letra era um botão que girava entre níveis — a pessoa não sabia
+quantos tamanhos existiam nem em qual estava. Agora vê os três de uma vez.</p>
+
+<figure>
+  <img src="img/radiogroup-letra.png" alt="Barra gov.br com o grupo Tamanho da letra, opção Grande marcada" />
+  <figcaption>Tamanho da letra: a opção marcada fica preenchida e sublinhada (não só muda de cor) e recebe o anel de foco amarelo.</figcaption>
+</figure>
+
+<div class="lado">
+<figure><img src="img/radiogroup-login.png" alt="Grupo Como você quer entrar, com Pelo seu banco marcado" />
+<figcaption>“Como você quer entrar?”: cada opção tem ícone, nome e explicação; a marcada mostra círculo azul com ✓.</figcaption></figure>
+<div>
+<h3>Papéis, estados e propriedades</h3>
+<table>
+<tr><th>Atributo</th><th>Função</th></tr>
+<tr><td><code>role="radiogroup"</code></td><td>Diz que o contêiner é um grupo de opções exclusivas.</td></tr>
+<tr><td><code>aria-labelledby</code> (no grupo)</td><td>Dá ao grupo o nome do título visível: “Tamanho da letra, grupo”.</td></tr>
+<tr><td><code>role="radio"</code></td><td>Cada cartão é anunciado como “botão de opção”.</td></tr>
+<tr><td><code>aria-checked</code></td><td><code>true</code>/<code>false</code>: “selecionado” ou “não selecionado”.</td></tr>
+<tr><td><code>aria-labelledby</code> (na opção)</td><td>Aponta só para o nome (“Pelo seu banco”), evitando que a explicação vire parte do nome.</td></tr>
+<tr><td><code>aria-describedby</code></td><td>A explicação é lida depois: “Use o acesso do banco onde você já tem conta”.</td></tr>
+<tr><td><code>tabIndex</code> 0 / −1</td><td><em>Roving tabindex</em>: só a opção marcada entra no Tab.</td></tr>
+</table>
+</div>
+</div>
+
+<h3>Teclado</h3>
+<ul>
+  <li><span class="tecla">Tab</span> entra no grupo direto na opção marcada — o grupo inteiro é <strong>uma</strong> parada do Tab, menos cansativo.</li>
+  <li><span class="tecla">→</span> <span class="tecla">↓</span> / <span class="tecla">←</span> <span class="tecla">↑</span> movem e já marcam a próxima/anterior (dá a volta no fim).</li>
+  <li><span class="tecla">Espaço</span> marca; <span class="tecla">Home</span>/<span class="tecla">End</span> vão à primeira/última.</li>
+</ul>
+<div class="caixa caixa--verde"><strong>O que o leitor de tela fala:</strong> “Tamanho da letra, grupo. Grande, botão de opção, selecionado, 2 de 3.”<br />
+<strong>Critérios WCAG:</strong> 1.3.1 Informações e relações · 4.1.2 Nome, função, valor · 2.1.1 Teclado · 2.5.8 Tamanho do alvo · 1.4.1 Uso de cor.</div>
+</section>
+
+<!-- ====================== WIDGET 2 ====================== -->
+<section class="widget">
+<div class="titulo-widget"><span class="etiqueta">Componente ARIA 2</span>
+<h2>Menu com subitens — <code>role="menubar"</code> + <code>role="menu"</code></h2></div>
+<p><strong>Função:</strong> organizar os serviços da área logada em grupos —
+<em>Meu benefício ▸ Extrato de pagamento, Descontos, Comprovante para o IR</em>;
+<em>Meus pedidos ▸ Fazer um novo pedido, Acompanhar, Agendar</em>; <em>Minha conta ▸
+Meus dados, Segurança, Sair da conta</em>. Para o idoso, isso reduz o número de
+opções vistas de uma vez. Para quem não enxerga, o ARIA conta a estrutura
+(“tem submenu”, “aberto”, “3 itens”) que quem enxerga percebe pelo desenho.</p>
+
+<div class="lado">
+<figure><img src="img/menu-computador.png" alt="Menu Meu benefício aberto no computador, com Descontos do benefício em foco" />
+<figcaption>Computador: menu horizontal; o item aberto ganha barra azul e seta virada para cima.</figcaption></figure>
+<figure><img src="img/menu-celular.png" alt="Menu vertical no celular com Meus pedidos aberto" />
+<figcaption>Celular: o mesmo menu, vertical, aberto pelo botão “Menu”; subitens aparecem recuados abaixo do item.</figcaption></figure>
+</div>
+
+<h3>Papéis, estados e propriedades</h3>
+<table>
+<tr><th style="width:32%">Atributo</th><th>Função</th></tr>
+<tr><td><code>role="menubar"</code> + <code>aria-label="Menu principal"</code></td><td>Barra de menu principal, com nome.</td></tr>
+<tr><td><code>aria-orientation</code></td><td><code>horizontal</code> no computador, <code>vertical</code> no celular: informa quais setas usar.</td></tr>
+<tr><td><code>role="menuitem"</code></td><td>Cada opção do menu e do submenu.</td></tr>
+<tr><td><code>aria-haspopup="menu"</code></td><td>Avisa que o item abre um submenu (“Meu benefício, submenu”).</td></tr>
+<tr><td><code>aria-expanded</code></td><td><code>true</code>/<code>false</code>: submenu aberto ou fechado. O CSS usa esse mesmo atributo para virar a seta.</td></tr>
+<tr><td><code>role="menu"</code> + <code>aria-labelledby</code></td><td>O submenu é um menu cujo nome é o do item-pai.</td></tr>
+<tr><td><code>role="none"</code> nos <code>&lt;li&gt;</code></td><td>Remove a semântica de lista, que seria redundante dentro de um menu.</td></tr>
+</table>
+
+<h3>Teclado (padrão APG Menubar)</h3>
+<ul>
+  <li><span class="tecla">←</span> <span class="tecla">→</span> andam entre os itens da barra (no celular, <span class="tecla">↑</span> <span class="tecla">↓</span>); <span class="tecla">Home</span>/<span class="tecla">End</span>.</li>
+  <li><span class="tecla">↓</span>, <span class="tecla">Enter</span> ou <span class="tecla">Espaço</span> abrem o submenu e focam o primeiro subitem; <span class="tecla">↑</span> abre focando o último.</li>
+  <li>No submenu: <span class="tecla">↑</span> <span class="tecla">↓</span> andam; <span class="tecla">Esc</span> fecha e devolve o foco ao item-pai; <span class="tecla">←</span> <span class="tecla">→</span> passam ao grupo vizinho já aberto.</li>
+  <li><span class="tecla">Tab</span> sai do menu e fecha o que estiver aberto; clicar fora também fecha.</li>
+</ul>
+<div class="caixa caixa--verde"><strong>O que o leitor de tela fala:</strong> “Menu principal, barra de menus. Meu benefício, submenu, recolhido.” → <span class="tecla">↓</span> → “Extrato de pagamento, item de menu, 1 de 3.”<br />
+<strong>Critérios WCAG:</strong> 1.3.1 · 4.1.2 · 2.1.1 Teclado · 2.1.2 Sem bloqueio do teclado · 2.4.3 Ordem do foco · 2.4.7 Foco visível.</div>
+</section>
+
+<!-- ====================== WIDGET 3 ====================== -->
+<section class="widget">
+<div class="titulo-widget"><span class="etiqueta">Componente ARIA 3</span>
+<h2>Abas — <code>role="tablist"</code>, <code>tab</code>, <code>tabpanel</code></h2></div>
+<p><strong>Função:</strong> mostrar os “Avisos importantes” (Prova de vida,
+Pagamento, Segurança, Empréstimo). Antes era um <strong>carrossel</strong>: escondia o
+que vinha depois e obrigava a passar um por um. Com abas, todos os assuntos ficam à
+vista e a pessoa vai direto ao que interessa. Nada troca sozinho.</p>
+
+<figure>
+  <img src="img/abas.png" alt="Abas dos avisos com Pagamento selecionada" />
+  <figcaption>Aba selecionada: fundo branco ligado ao painel, barra azul grossa embaixo e texto em negrito — três pistas além da cor. No celular as abas ficam em 2 colunas (ou 1, com letra grande), sem rolar de lado.</figcaption>
+</figure>
+
+<h3>Papéis, estados e propriedades</h3>
+<table>
+<tr><th style="width:32%">Atributo</th><th>Função</th></tr>
+<tr><td><code>role="tablist"</code> + <code>aria-label</code></td><td>“Assuntos dos avisos, lista de abas”.</td></tr>
+<tr><td><code>role="tab"</code></td><td>Cada assunto é uma aba.</td></tr>
+<tr><td><code>aria-selected</code></td><td>Qual aba está aberta (“selecionada”).</td></tr>
+<tr><td><code>aria-controls</code></td><td>Liga a aba ao painel que ela mostra.</td></tr>
+<tr><td><code>role="tabpanel"</code> + <code>aria-labelledby</code></td><td>O painel tem como nome a aba que o controla (“Pagamento, painel de aba”).</td></tr>
+<tr><td><code>tabIndex="0"</code> no painel</td><td>Depois das abas, um Tab leva direto ao texto do aviso.</td></tr>
+<tr><td><code>hidden</code> nos painéis inativos</td><td>Painéis escondidos não são lidos nem recebem foco.</td></tr>
+</table>
+
+<h3>Teclado</h3>
+<ul>
+  <li><span class="tecla">Tab</span> entra na aba selecionada (roving tabindex).</li>
+  <li><span class="tecla">←</span> <span class="tecla">→</span> (e <span class="tecla">↑</span> <span class="tecla">↓</span>) movem o foco entre as abas; <span class="tecla">Home</span>/<span class="tecla">End</span>.</li>
+  <li><span class="tecla">Enter</span> ou <span class="tecla">Espaço</span> abrem a aba focada. Escolhemos <strong>ativação manual</strong>: o conteúdo só muda quando a pessoa confirma, então explorar as abas não troca nada “por conta própria” (WCAG 3.2.1).</li>
+</ul>
+<div class="caixa caixa--verde"><strong>O que o leitor de tela fala:</strong> “Assuntos dos avisos, lista de abas. Prova de vida, aba, selecionada, 1 de 4.”<br />
+<strong>Critérios WCAG:</strong> 1.3.1 · 4.1.2 · 2.1.1 · 2.2.2 Pausar, parar, ocultar · 3.2.1 Em foco · 1.4.10 Refluxo.</div>
+</section>
+
+<!-- ====================== WIDGET 4 ====================== -->
+<section class="widget">
+<div class="titulo-widget"><span class="etiqueta">Componente ARIA 4</span>
+<h2>Diálogo modal — <code>role="dialog"</code> + <code>aria-modal</code></h2></div>
+<p><strong>Função:</strong> pedir confirmação antes de <strong>sair da conta</strong>.
+Um toque sem querer não deve jogar a pessoa para fora e obrigá-la a digitar CPF e
+senha de novo — uma tarefa difícil para muitos idosos (WCAG 3.3.4, prevenção de erros).</p>
+
+<figure>
+  <img src="img/dialogo.png" alt="Diálogo Quer mesmo sair da conta, com foco no botão Não, continuar aqui" />
+  <figcaption>O fundo escurece e fica inativo. O foco já começa no botão seguro “Não, continuar aqui”. Os botões dizem a ação por extenso, em vez de “OK/Cancelar”.</figcaption>
+</figure>
+
+<h3>Papéis, estados e propriedades</h3>
+<table>
+<tr><th style="width:32%">Atributo</th><th>Função</th></tr>
+<tr><td><code>&lt;dialog&gt;</code> + <code>showModal()</code></td><td>Papel <code>dialog</code> nativo; o navegador deixa o resto da página inerte.</td></tr>
+<tr><td><code>aria-modal="true"</code></td><td>Diz ao leitor de tela que só o diálogo importa agora — ele não lê o conteúdo por trás.</td></tr>
+<tr><td><code>aria-labelledby</code></td><td>O título “Quer mesmo sair da conta?” vira o nome do diálogo.</td></tr>
+<tr><td><code>aria-describedby</code></td><td>O texto explicativo é lido logo em seguida.</td></tr>
+</table>
+
+<h3>Foco e teclado</h3>
+<ul>
+  <li>Ao abrir, o foco vai para a opção <strong>segura</strong>, não para a destrutiva: um Enter apressado não causa estrago.</li>
+  <li><span class="tecla">Tab</span>/<span class="tecla">Shift+Tab</span> ficam presos entre os dois botões.</li>
+  <li><span class="tecla">Esc</span> fecha e equivale a “Não”.</li>
+  <li>Ao fechar, o foco volta para quem abriu o diálogo (o item “Minha conta” do menu ou o botão “Sair da conta”) — a pessoa não se perde (WCAG 2.4.3).</li>
+  <li>Se confirmar, a tela inicial é anunciada pela região viva: “Você saiu da sua conta.”</li>
+</ul>
+<div class="caixa caixa--verde"><strong>O que o leitor de tela fala:</strong> “Quer mesmo sair da conta?, diálogo. Para ver seus dados de novo, você vai precisar digitar o CPF e a senha do gov.br. Não, continuar aqui, botão.”<br />
+<strong>Critérios WCAG:</strong> 3.3.4 Prevenção de erros · 2.4.3 Ordem do foco · 2.1.2 Sem bloqueio do teclado · 4.1.2 Nome, função, valor.</div>
+</section>
+
+<h2>3. Outros usos de ARIA no projeto</h2>
+<table>
+<tr><th style="width:32%">Onde</th><th>Atributos</th><th>Para quê</th></tr>
+<tr><td>Acordeões (“O que é a conta gov.br?”, “Onde encontro o meu CPF?”)</td><td><code>aria-expanded</code>, <code>aria-controls</code></td><td>Padrão <em>Disclosure</em>: informa se o bloco está aberto ou fechado.</td></tr>
+<tr><td>Botão “Alto contraste”</td><td><code>aria-pressed</code></td><td>Botão alternador: “Alto contraste, botão de alternância, pressionado”. O nome não muda ao alternar, como recomenda o APG.</td></tr>
+<tr><td>Botão “Menu” no celular e “Mostrar senha”</td><td><code>aria-expanded</code>, <code>aria-pressed</code></td><td>Estado do menu aberto / senha visível.</td></tr>
+<tr><td>Campos de CPF e senha</td><td><code>aria-describedby</code>, <code>aria-invalid</code>, <code>role="alert"</code></td><td>A dica e o erro são lidos junto com o campo; o erro é anunciado assim que aparece.</td></tr>
+<tr><td>Avisos de sistema</td><td><code>role="status"</code> + <code>aria-live="polite"</code></td><td>Anuncia mudanças sem foco próprio: entrou, saiu, contraste ligado.</td></tr>
+<tr><td>Marca do INSS e ícones</td><td><code>role="img"</code> + <code>aria-label</code>; <code>aria-hidden</code></td><td>A marca é imagem com nome; ícones ao lado de texto são escondidos para não repetir.</td></tr>
+<tr><td>Botão “Avisos” com selo “1”</td><td><code>aria-label="Avisos: 1 não lido"</code></td><td>O número do selo é só visual; o nome falado inclui a contagem.</td></tr>
+</table>
+
+<h2>4. Princípios da WCAG aplicados</h2>
+<table>
+<tr><th style="width:18%">Princípio</th><th>O que fizemos</th></tr>
+<tr><td><strong>Perceptível</strong></td><td>Contraste ≥ 4.5:1 em todo texto (maior parte ≥ 7:1); tema alto contraste; letra ampliável em 3 níveis com layout em <code>rem</code>; nada informado só por cor; textos alternativos; refluxo sem rolagem lateral até a letra máxima em tela de 390px.</td></tr>
+<tr><td><strong>Operável</strong></td><td>Tudo funciona pelo teclado; foco visível com anel duplo azul + amarelo; link “Ir direto para o conteúdo”; alvos ≥ 48px; nada se move sozinho; sem tempo limite; <code>prefers-reduced-motion</code> respeitado; troca de tela move o foco para o título e atualiza o <code>&lt;title&gt;</code>.</td></tr>
+<tr><td><strong>Compreensível</strong></td><td>Linguagem simples e direta; passo a passo “Etapa 1 de 2”; erros que dizem o que fazer; confirmação antes de ação difícil de desfazer; CPF confirmado na tela de senha; <code>lang="pt-BR"</code>.</td></tr>
+<tr><td><strong>Robusto</strong></td><td>HTML semântico (<code>header</code>, <code>nav</code>, <code>main</code>, <code>footer</code>, títulos sem pular nível); ARIA conforme o APG; estados visuais desenhados a partir dos atributos ARIA.</td></tr>
+</table>
+<p>Também seguimos recomendações do <strong>eMAG 3.1</strong>: barra de acessibilidade
+no topo com contraste e tamanho de letra (1.9), atalho para o conteúdo (1.5), botão
+de Libras/VLibras e preferências salvas para a próxima visita.</p>
+
+<h2>5. Como testamos</h2>
+<ul>
+  <li><strong>axe-core 4.10</strong> (regras WCAG 2.0/2.1/2.2 A e AA + boas práticas) em todas as telas, inclusive com o menu e o diálogo abertos: <strong>zero violações</strong>.</li>
+  <li><strong>Teclado</strong>, com script automatizado (Playwright): conferimos em cada componente que as setas, Home/End, Enter, Espaço, Esc e Tab fazem o que o APG define, e que <code>aria-checked</code>, <code>aria-selected</code> e <code>aria-expanded</code> mudam junto.</li>
+  <li><strong>Refluxo:</strong> largura de 390px com letra “Maior” e alto contraste — sem rolagem horizontal.</li>
+  <li><strong>Leitor de tela</strong> (roteiro sugerido): NVDA + Firefox/Chrome no Windows, ou TalkBack no Android. Navegar com Tab até “Tamanho da letra” e usar as setas; ir até “Avisos importantes” e trocar de aba; entrar, abrir “Meu benefício” e percorrer o submenu; escolher “Sair da conta” e ouvir o diálogo.</li>
+</ul>
+
+<h2>6. Referências</h2>
+<ul>
+  <li>W3C. <em>Web Content Accessibility Guidelines (WCAG) 2.2</em>. https://www.w3.org/TR/WCAG22/</li>
+  <li>W3C. <em>Accessible Rich Internet Applications (WAI-ARIA) 1.2</em>. https://www.w3.org/TR/wai-aria-1.2/</li>
+  <li>W3C. <em>ARIA Authoring Practices Guide</em> — padrões Radio Group, Menubar, Tabs e Dialog (Modal). https://www.w3.org/WAI/ARIA/apg/</li>
+  <li>Governo Federal. <em>eMAG — Modelo de Acessibilidade em Governo Eletrônico</em>, versão 3.1.</li>
+  <li>Governo Federal. <em>Padrão Digital de Governo (gov.br Design System)</em>. https://www.gov.br/ds/</li>
+  <li>Braille Institute. <em>Atkinson Hyperlegible</em>. https://www.brailleinstitute.org/freefont/</li>
+</ul>
+</body>
+</html>

@@ -39,12 +39,17 @@ src/
 ├── contexto/
 │   └── AcessibilidadeContexto.jsx   fonte, contraste e avisos ao leitor de tela
 ├── componentes/
-│   ├── BarraAcessibilidade.jsx  barra do eMAG (letra, contraste, Libras)
+│   ├── BarraAcessibilidade.jsx  faixa gov.br + barra do eMAG (letra, contraste, Libras)
+│   ├── GrupoOpcoes.jsx          padrão ARIA Radio Group
+│   ├── MenuPrincipal.jsx        padrão ARIA Menubar com submenus
+│   ├── Dialogo.jsx              padrão ARIA Dialog (modal)
 │   ├── Acordeao.jsx             padrão ARIA Disclosure
-│   ├── Avisos.jsx               carrossel que NÃO anda sozinho
+│   ├── Avisos.jsx               padrão ARIA Tabs (nada anda sozinho)
 │   ├── CampoCPF.jsx             rótulo, dica, máscara e erro acessíveis
 │   ├── CampoSenha.jsx           senha com alternador "Mostrar senha"
 │   ├── TopoApp.jsx              barra do app logado, com menu e rótulos
+│   ├── CabecalhoGov.jsx         cabeçalho das telas de CPF e senha
+│   ├── Passos.jsx               "Etapa 1 de 2"
 │   ├── ListaServicos.jsx        lista semântica de serviços
 │   ├── Icone.jsx                SVGs decorativos (aria-hidden)
 │   ├── LogoINSS.jsx             marca com role="img"
@@ -57,14 +62,30 @@ src/
     └── componentes.css
 ```
 
+## WAI-ARIA usado (requisito do trabalho)
+
+Quatro widgets completos, seguindo o [ARIA Authoring Practices Guide](https://www.w3.org/WAI/ARIA/apg/).
+A explicação detalhada está no relatório [docs/relatorio-acessibilidade.pdf](docs/relatorio-acessibilidade.pdf).
+
+| Widget | Onde | Papéis e estados | Arquivo |
+| --- | --- | --- | --- |
+| Grupo de opções | Tamanho da letra (topo) e "Como você quer entrar?" (login) | `radiogroup`, `radio`, `aria-checked`, `aria-labelledby`, `aria-describedby` | [GrupoOpcoes.jsx](src/componentes/GrupoOpcoes.jsx) |
+| Menu com subitens | Menu principal da área logada | `menubar`, `menu`, `menuitem`, `aria-haspopup`, `aria-expanded`, `aria-orientation` | [MenuPrincipal.jsx](src/componentes/MenuPrincipal.jsx) |
+| Abas | Avisos importantes (tela inicial) | `tablist`, `tab`, `tabpanel`, `aria-selected`, `aria-controls` | [Avisos.jsx](src/componentes/Avisos.jsx) |
+| Diálogo modal | Confirmação "Quer mesmo sair da conta?" | `dialog`, `aria-modal`, `aria-labelledby`, `aria-describedby` | [Dialogo.jsx](src/componentes/Dialogo.jsx) |
+
+Também: acordeão (`aria-expanded` + `aria-controls`), alternador de contraste
+(`aria-pressed`), região viva (`aria-live`, `role="alert"`) e campos com
+`aria-describedby` / `aria-invalid`.
+
 ## Decisões de acessibilidade
 
 ### Percepção
 - **Contraste**: cores escolhidas acima de 4.5:1; texto principal e azul
   primário passam de 9:1 (WCAG 1.4.3). Tema de **alto contraste**
   (preto/amarelo) exigido pelo eMAG 1.9.
-- **Tamanho de letra**: base de 18px e três níveis de ampliação pelo botão
-  "Aumentar letra". Todo o CSS usa `rem`, então o layout cresce junto.
+- **Tamanho de letra**: base de 18px e três tamanhos (Normal, Grande, Maior)
+  escolhidos num grupo de opções, todos visíveis de uma vez. Todo o CSS usa `rem`, então o layout cresce junto.
   A preferência fica salva no `localStorage`.
 - **Nunca só cor**: erro tem ícone + borda grossa + texto; o botão de
   contraste mostra "Ligado/Desligado" por escrito (WCAG 1.4.1).
@@ -76,8 +97,10 @@ src/
 - **Foco visível** com anel duplo (azul escuro + halo amarelo), visível
   em qualquer fundo (WCAG 2.4.7 / 2.4.13).
 - **Link "Ir direto para o conteúdo"** como primeiro item tabulável.
-- **Nada se move sozinho**: o carrossel de avisos só muda quando a pessoa
-  toca em Anterior/Próximo (WCAG 2.2.2). Nenhum tempo limite.
+- **Nada se move sozinho**: os avisos ficam em abas e só trocam quando a
+  pessoa escolhe (WCAG 2.2.2). Nenhum tempo limite.
+- **Fonte Atkinson Hyperlegible**, criada para leitores com baixa visão
+  (diferencia bem I/l/1 e 0/O — útil para CPF).
 - `prefers-reduced-motion` desliga as transições.
 
 ### Compreensão
@@ -97,7 +120,9 @@ src/
   Rótulo inteiro mais uma linha dizendo o que o serviço faz.
 - **Cartões em grade elástica**: `minmax` em `rem` faz a grade virar coluna
   única sozinha quando a letra aumenta (WCAG 1.4.10 — refluxo).
-- **Menu** é um disclosure: fecha com Esc e devolve o foco ao botão Menu.
+- **Menu** com subitens (menubar): setas, Esc e Home/End; horizontal no
+  computador e vertical no celular.
+- **Sair pede confirmação** num diálogo modal com o foco na opção segura.
 - **Senha visível sob demanda**: bolinhas escondidas são causa comum de erro
   de digitação; o botão alterna com `aria-pressed`.
 - **Sair da conta** aparece no menu e no fim da página, e o retorno à tela
