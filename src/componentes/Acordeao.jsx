@@ -8,13 +8,21 @@ import Icone from "./Icone.jsx";
  * informa o estado com aria-expanded. O painel some do DOM quando fechado,
  * então o leitor de tela não lê conteúdo invisível (eMAG 2.1).
  */
-export default function Acordeao({ titulo, children, abertoInicialmente = false }) {
+export default function Acordeao({
+  titulo,
+  children,
+  abertoInicialmente = false,
+  nivel = 3,
+}) {
+  // O nível do título depende de onde o acordeão está: sem pular níveis
+  // (h1 → h3), a estrutura lida pelo leitor de tela continua lógica.
+  const Titulo = `h${nivel}`;
   const [aberto, setAberto] = useState(abertoInicialmente);
   const idPainel = useId();
 
   return (
     <section className="acordeao">
-      <h3>
+      <Titulo>
         <button
           type="button"
           className="acordeao__gatilho"
@@ -28,7 +36,7 @@ export default function Acordeao({ titulo, children, abertoInicialmente = false 
             <Icone nome="seta-baixo" tamanho={26} />
           </span>
         </button>
-      </h3>
+      </Titulo>
       {aberto && (
         <div className="acordeao__painel" id={idPainel}>
           {children}

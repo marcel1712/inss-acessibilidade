@@ -21,6 +21,7 @@ body {
 h1,
 h2,
 h3,
+h4,
 p,
 ul,
 ol,
@@ -41,7 +42,8 @@ svg {
 
 h1 {
   font-size: var(--txt-2xl);
-  line-height: 1.25;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
   font-weight: var(--peso-forte);
 }
 
@@ -140,20 +142,50 @@ html[data-tema="alto-contraste"] .pular-para-conteudo {
   }
 }
 
-/* Estrutura do aplicativo: coluna única, largura de celular */
+/* Estrutura: coluna única no celular; no computador o conteúdo fica
+   centralizado com largura máxima (linhas longas cansam a leitura). */
 .app {
-  max-width: var(--largura-max);
   min-height: 100vh;
-  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
   background: var(--cor-fundo);
-  border-inline: 1px solid var(--cor-borda-suave);
+}
+
+.container {
+  width: 100%;
+  max-width: var(--largura-max);
+  margin-inline: auto;
+  padding-inline: var(--esp-4);
+}
+
+@media (min-width: 48rem) {
+  .container {
+    padding-inline: var(--esp-6);
+  }
 }
 
 .conteudo {
-  padding: var(--esp-5) var(--esp-4) var(--esp-7);
+  flex: 1;
+  width: 100%;
+  max-width: var(--largura-max);
+  margin-inline: auto;
+  padding: var(--esp-6) var(--esp-4) var(--esp-8);
   display: flex;
   flex-direction: column;
-  gap: var(--esp-6);
+  gap: var(--esp-7);
+}
+
+.conteudo--estreito {
+  max-width: calc(var(--largura-texto) + 2 * var(--esp-4));
+}
+
+@media (min-width: 48rem) {
+  .conteudo {
+    padding-inline: var(--esp-6);
+  }
+  .conteudo--estreito {
+    max-width: calc(var(--largura-texto) + 2 * var(--esp-6));
+  }
 }
 
 .conteudo:focus {
@@ -164,4 +196,30 @@ html[data-tema="alto-contraste"] .pular-para-conteudo {
   display: flex;
   flex-direction: column;
   gap: var(--esp-4);
+}
+
+.secao__cabecalho {
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-2);
+}
+
+/* Fio com as cores da marca sob os títulos de seção */
+.secao__cabecalho h2::after {
+  content: "";
+  display: block;
+  width: 4.5rem;
+  height: 0.3rem;
+  margin-top: var(--esp-2);
+  border-radius: var(--raio-pill);
+  background: linear-gradient(
+    90deg,
+    var(--inss-verde) 0 33%,
+    var(--inss-amarelo) 33% 66%,
+    var(--inss-azul) 66%
+  );
+}
+
+html[data-tema="alto-contraste"] .secao__cabecalho h2::after {
+  background: var(--cor-primaria);
 }

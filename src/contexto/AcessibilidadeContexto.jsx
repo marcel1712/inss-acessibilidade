@@ -53,13 +53,12 @@ export function ProvedorAcessibilidade({ children }) {
       recado,
       /** Avisa leitores de tela sobre mudanças que não têm foco próprio. */
       anunciar: (texto) => setRecado(texto),
-      aumentarFonte: () => {
-        setNivelFonte((atual) => {
-          const proximo =
-            NIVEIS_FONTE[(NIVEIS_FONTE.indexOf(atual) + 1) % NIVEIS_FONTE.length];
-          setRecado(`Tamanho da letra: nível ${proximo} de ${NIVEIS_FONTE.length}.`);
-          return proximo;
-        });
+      /** Usado pelo grupo de opções "Tamanho da letra" (role="radiogroup"). */
+      definirNivelFonte: (nivel) => {
+        if (!NIVEIS_FONTE.includes(nivel)) return;
+        // Sem recado na região viva: o próprio leitor de tela já fala
+        // "Grande, botão de opção, selecionado" ao mudar o aria-checked.
+        setNivelFonte(nivel);
       },
       alternarContraste: () => {
         setAltoContraste((atual) => {

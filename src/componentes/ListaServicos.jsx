@@ -14,7 +14,9 @@ export default function ListaServicos({ titulo, servicos }) {
 
   return (
     <section className="secao" aria-labelledby={idTitulo}>
-      <h2 id={idTitulo}>{titulo}</h2>
+      <div className="secao__cabecalho">
+        <h2 id={idTitulo}>{titulo}</h2>
+      </div>
       <ul className="servicos">
         {servicos.map((servico) => (
           <li key={servico.nome}>

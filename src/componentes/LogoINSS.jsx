@@ -1,43 +1,106 @@
+import { useId } from "react";
+
 /**
- * Marca do INSS (releitura simplificada para fins didáticos).
+ * Marca do INSS (releitura em SVG para fins didáticos).
  *
- * É uma imagem funcional: recebe role="img" e um nome acessível,
- * porque identifica de qual órgão é o aplicativo (WCAG 1.1.1).
+ * Desenho: oval formado por um crescente verde (esquerda) e um amarelo
+ * (direita), com a esfera de quadrados azuis no centro.
+ *
+ * É uma imagem FUNCIONAL — identifica de qual órgão é o serviço — então
+ * recebe role="img" e um nome acessível (WCAG 1.1.1). Quando aparece ao lado
+ * do texto "Meu INSS", passe decorativa para não repetir a leitura.
  */
-export default function LogoINSS({ tamanho = 120 }) {
-  const pontos = [];
-  for (let linha = 0; linha < 3; linha += 1) {
-    for (let coluna = 0; coluna < 4; coluna += 1) {
-      pontos.push({ x: 42 + coluna * 12, y: 36 + linha * 12 });
+
+const VERDE = "#00875A";
+const AMARELO = "#F2B84B";
+const AZUL = "#1A6FB5";
+
+/**
+ * Gera os quadrados da esfera: uma grade de latitude × longitude projetada
+ * numa esfera, então os quadrados encolhem perto das bordas, como na marca.
+ */
+function gerarQuadrados() {
+  const cx = 100;
+  const cy = 70;
+  const raioX = 47;
+  const raioY = 52;
+  const divisoes = 8;
+  const limite = (Math.PI / 2) * 0.96;
+  const folga = 0.19; // espaço branco entre os quadrados
+
+  const projetar = (lon, lat) => [
+    cx + raioX * Math.sin(lon) * Math.cos(lat),
+    cy + raioY * Math.sin(lat),
+  ];
+  const angulo = (indice, fracao) =>
+    -limite + (2 * limite * (indice + fracao)) / divisoes;
+
+  const quadrados = [];
+  for (let i = 0; i < divisoes; i += 1) {
+    for (let j = 0; j < divisoes; j += 1) {
+      const lonCentro = angulo(i, 0.5);
+      const latCentro = angulo(j, 0.5);
+      // Corta os cantos da grade para formar o contorno redondo.
+      if (Math.cos(lonCentro) * Math.cos(latCentro) < 0.24) continue;
+
+      const lon0 = angulo(i, folga);
+      const lon1 = angulo(i, 1 - folga);
+      const lat0 = angulo(j, folga);
+      const lat1 = angulo(j, 1 - folga);
+      const cantos = [
+        projetar(lon0, lat0),
+        projetar(lon1, lat0),
+        projetar(lon1, lat1),
+        projetar(lon0, lat1),
+      ];
+      quadrados.push(
+        cantos.map(([x, y]) => `${x.toFixed(1)},${y.toFixed(1)}`).join(" "),
+      );
     }
   }
+  return quadrados;
+}
+
+const QUADRADOS = gerarQuadrados();
+
+export default function LogoINSS({ tamanho = 120, decorativa = false }) {
+  // id único: a marca pode aparecer mais de uma vez na mesma página.
+  const idRecorte = useId();
+  const acessibilidade = decorativa
+    ? { "aria-hidden": true, focusable: "false" }
+    : {
+        role: "img",
+        "aria-label": "INSS — Instituto Nacional do Seguro Social",
+      };
 
   return (
     <svg
+      className="logo-inss"
       width={tamanho}
-      height={tamanho * 0.63}
-      viewBox="0 0 120 76"
-      role="img"
-      aria-label="INSS — Instituto Nacional do Seguro Social"
+      height={Math.round(tamanho * 0.7)}
+      viewBox="0 0 200 140"
+      {...acessibilidade}
     >
-      {/* Arco laranja */}
-      <path
-        d="M112 6c-26-6-58 4-78 24C22 42 16 54 20 60c-10-2-12-16 2-32C38 8 78-4 112 6z"
-        fill="#E8A33D"
-      />
-      {/* Folha verde */}
-      <ellipse
-        cx="60"
-        cy="42"
-        rx="38"
-        ry="27"
-        transform="rotate(-20 60 42)"
-        fill="#1B7A4B"
-      />
-      {/* Malha de pontos azuis */}
-      <g fill="#1351B4" transform="rotate(-20 60 42)">
-        {pontos.map((ponto) => (
-          <circle key={`${ponto.x}-${ponto.y}`} cx={ponto.x} cy={ponto.y} r="4" />
+      <defs>
+        <clipPath id={idRecorte}>
+          <ellipse cx="100" cy="70" rx="98" ry="68" />
+        </clipPath>
+      </defs>
+      <g clipPath={`url(#${CSS.escape(idRecorte)})`}>
+        {/* Crescente verde: borda interna em "<", abraçando a esfera */}
+        <path
+          d="M0 0H77C56 18 42 44 45 74C62 86 82 112 102 140H0Z"
+          fill={VERDE}
+        />
+        {/* Crescente amarelo: o mesmo desenho girado 180° */}
+        <path
+          d="M200 140H123C144 122 158 96 155 66C138 54 118 28 98 0H200Z"
+          fill={AMARELO}
+        />
+      </g>
+      <g fill={AZUL}>
+        {QUADRADOS.map((pontos) => (
+          <polygon key={pontos} points={pontos} />
         ))}
       </g>
     </svg>

@@ -160,6 +160,20 @@ const DESENHOS = {
       <circle cx="18" cy="12" r="1.6" fill="currentColor" />
     </>
   ),
+  casa: (
+    <>
+      <path d="M3.5 11 12 4l8.5 7" />
+      <path d="M5.5 9.5V20h13V9.5" />
+      <path d="M10 20v-5.5h4V20" />
+    </>
+  ),
+  fechar: <path d="M6 6l12 12M18 6 6 18" />,
+  carteira: (
+    <>
+      <rect x="3" y="6" width="18" height="14" rx="2" />
+      <path d="M3 10h18M16 15h2" />
+    </>
+  ),
   "seta-direita": <path d="M9 5l7 7-7 7" />,
   "seta-esquerda": <path d="M15 5l-7 7 7 7" />,
   "seta-baixo": <path d="M5 9l7 7 7-7" />,

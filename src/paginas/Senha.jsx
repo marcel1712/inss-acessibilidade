@@ -2,6 +2,8 @@ import { useRef, useState } from "react";
 import Icone from "../componentes/Icone.jsx";
 import CampoSenha from "../componentes/CampoSenha.jsx";
 import Acordeao from "../componentes/Acordeao.jsx";
+import CabecalhoGov from "../componentes/CabecalhoGov.jsx";
+import Passos from "../componentes/Passos.jsx";
 
 /** Nesta versão de estudo, qualquer senha com 8 caracteres ou mais entra. */
 function validarSenha(senha) {
@@ -33,80 +35,74 @@ export default function Senha({ cpf, aoVoltar, aoEntrar, referenciaTitulo }) {
 
   return (
     <>
-      <header className="cabecalho cabecalho--interno">
-        <button
-          type="button"
-          className="botao botao--secundario botao--navegacao"
-          onClick={aoVoltar}
-        >
-          <Icone nome="voltar" tamanho={22} />
-          <span>Voltar e corrigir o CPF</span>
-        </button>
-        <p className="cabecalho__marca">gov.br</p>
-      </header>
+      <CabecalhoGov
+        rotuloVoltar="Voltar e corrigir o CPF"
+        aoVoltar={aoVoltar}
+      />
 
-      <main className="conteudo" id="conteudo">
-        <section className="secao">
-          <p className="passos">Etapa 2 de 2: senha. É a última etapa.</p>
-          <div className="barra-progresso" aria-hidden="true">
-            <div
-              className="barra-progresso__preenchimento"
-              style={{ width: "100%" }}
-            />
+      <main id="conteudo" className="principal principal--cinza">
+        <div className="conteudo conteudo--estreito">
+          <div className="cartao-formulario">
+            <Passos atual={2} />
+
+            <h1 ref={referenciaTitulo} tabIndex={-1}>
+              Digite sua senha
+            </h1>
+
+            {/* Mostrar o CPF confirmado evita que a pessoa fique na dúvida se
+                digitou certo na etapa anterior (WCAG 3.3.4). */}
+            <p className="confirmacao">
+              <span>
+                Entrando com o CPF <strong>{cpf}</strong>
+              </span>
+              <button type="button" className="botao-texto" onClick={aoVoltar}>
+                Não é esse CPF? Corrigir
+              </button>
+            </p>
+
+            <form onSubmit={enviar} noValidate className="secao">
+              <CampoSenha
+                valor={senha}
+                aoMudar={(valor) => {
+                  setSenha(valor);
+                  if (erro) setErro(null);
+                }}
+                erro={erro}
+                referencia={campoRef}
+              />
+
+              <button
+                type="submit"
+                className="botao botao--primario botao--bloco"
+              >
+                <Icone nome="entrar" />
+                <span>Entrar</span>
+              </button>
+
+              <p>
+                <a href="#esqueci-senha">Esqueci a minha senha</a>
+              </p>
+            </form>
+
+            <Acordeao nivel={2} titulo="Não lembro a minha senha. E agora?">
+              <ol className="passos-numerados">
+                <li>
+                  Toque em <strong>Esqueci a minha senha</strong>.
+                </li>
+                <li>
+                  O gov.br envia um código para o seu e-mail ou celular
+                  cadastrado.
+                </li>
+                <li>Digite o código e crie uma senha nova.</li>
+              </ol>
+              <p>
+                Se você não tem mais acesso ao e-mail nem ao celular
+                cadastrados, ligue para a Central 135.
+              </p>
+            </Acordeao>
           </div>
 
-          <h1 ref={referenciaTitulo} tabIndex={-1}>
-            Digite sua senha
-          </h1>
-
-          {/* Mostrar o CPF confirmado evita que a pessoa fique na dúvida se
-              digitou certo na etapa anterior (WCAG 3.3.4). */}
-          <p className="confirmacao">
-            Entrando com o CPF <strong>{cpf}</strong>.{" "}
-            <button type="button" className="botao-texto" onClick={aoVoltar}>
-              Não é esse CPF? Corrigir
-            </button>
-          </p>
-
-          <form onSubmit={enviar} noValidate className="secao">
-            <CampoSenha
-              valor={senha}
-              aoMudar={(valor) => {
-                setSenha(valor);
-                if (erro) setErro(null);
-              }}
-              erro={erro}
-              referencia={campoRef}
-            />
-
-            <button type="submit" className="botao botao--primario botao--bloco">
-              <Icone nome="entrar" />
-              <span>Entrar</span>
-            </button>
-
-            <p>
-              <a href="#esqueci-senha">Esqueci a minha senha</a>
-            </p>
-          </form>
-
-          <Acordeao titulo="Não lembro a minha senha. E agora?">
-            <ol>
-              <li>
-                Toque em <strong>Esqueci a minha senha</strong>.
-              </li>
-              <li>
-                O gov.br envia um código para o seu e-mail ou celular
-                cadastrado.
-              </li>
-              <li>Digite o código e crie uma senha nova.</li>
-            </ol>
-            <p>
-              Se você não tem mais acesso ao e-mail nem ao celular cadastrados,
-              ligue para a Central 135.
-            </p>
-          </Acordeao>
-
-          <div className="caixa caixa--ajuda">
+          <div className="caixa caixa--alerta">
             <p className="caixa__titulo">
               <Icone nome="alerta" />
               <span>Nunca diga a sua senha a ninguém</span>
@@ -116,7 +112,7 @@ export default function Senha({ cpf, aoVoltar, aoEntrar, referenciaTitulo }) {
               ou dinheiro. Se alguém pedir, desligue e ligue para a Central 135.
             </p>
           </div>
-        </section>
+        </div>
       </main>
     </>
   );

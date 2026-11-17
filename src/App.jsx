@@ -9,8 +9,8 @@ import { useAcessibilidade } from "./contexto/AcessibilidadeContexto.jsx";
 
 const TITULOS = {
   inicio: "Meu INSS — Serviços do INSS pelo celular",
-  login: "Digite seu CPF — Entrar no Meu INSS",
-  senha: "Digite sua senha — Entrar no Meu INSS",
+  login: "Etapa 1 de 2: CPF — Entrar no Meu INSS",
+  senha: "Etapa 2 de 2: senha — Entrar no Meu INSS",
   painel: "Meus serviços — Meu INSS",
 };
 
@@ -41,7 +41,9 @@ export default function App() {
   function sair() {
     setPagina("inicio");
     setCpf("");
-    anunciar("Você saiu da sua conta. Voltamos para a tela inicial do Meu INSS.");
+    anunciar(
+      "Você saiu da sua conta. Voltamos para a tela inicial do Meu INSS.",
+    );
   }
 
   return (

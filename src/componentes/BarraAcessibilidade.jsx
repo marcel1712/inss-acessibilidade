@@ -1,57 +1,74 @@
 import Icone from "./Icone.jsx";
+import GrupoOpcoes from "./GrupoOpcoes.jsx";
 import { useAcessibilidade } from "../contexto/AcessibilidadeContexto.jsx";
 
+const TAMANHOS = [
+  { valor: 1, rotulo: "Normal", amostra: "0.9rem" },
+  { valor: 2, rotulo: "Grande", amostra: "1.1rem" },
+  { valor: 3, rotulo: "Maior", amostra: "1.35rem" },
+];
+
 /**
- * Barra fixa de acessibilidade, como manda o eMAG (recomendação 1.9:
- * controles de contraste e de tamanho de fonte no topo de toda página).
+ * Faixa gov.br + barra de acessibilidade, como manda o eMAG (recomendação 1.9:
+ * controles de contraste e de tamanho de letra no topo de toda página).
  *
- * Os botões que ligam/desligam algo usam aria-pressed, e o rótulo acessível
- * diz o estado atual por extenso — não basta a cor mudar (WCAG 1.4.1).
+ * - "Tamanho da letra" é um GRUPO DE OPÇÕES (role="radiogroup"): a pessoa vê
+ *   os três tamanhos de uma vez e escolhe direto, em vez de apertar um botão
+ *   várias vezes sem saber quantos níveis existem.
+ * - "Contraste" é um alternador (aria-pressed) com o estado escrito por extenso:
+ *   não basta a cor mudar (WCAG 1.4.1).
  */
 export default function BarraAcessibilidade({ aoPedirLibras }) {
-  const {
-    nivelFonte,
-    totalNiveisFonte,
-    altoContraste,
-    aumentarFonte,
-    alternarContraste,
-  } = useAcessibilidade();
+  const { nivelFonte, altoContraste, definirNivelFonte, alternarContraste } =
+    useAcessibilidade();
 
   return (
-    <nav className="barra-a11y" aria-label="Opções de acessibilidade">
-      <button
-        type="button"
-        className="barra-a11y__botao"
-        onClick={aumentarFonte}
-        aria-label={`Aumentar letra. Tamanho atual: nível ${nivelFonte} de ${totalNiveisFonte}. Toque para ir ao próximo tamanho.`}
-      >
-        <Icone nome="letra" tamanho={22} />
-        <span aria-hidden="true">Aumentar letra</span>
-        <span aria-hidden="true">
-          {nivelFonte} de {totalNiveisFonte}
-        </span>
-      </button>
+    <section className="barra-gov" aria-label="Barra do Governo Federal">
+      <div className="container barra-gov__interno">
+        <p className="barra-gov__marca">
+          <span className="barra-gov__govbr">gov.br</span>
+          <span className="barra-gov__orgao">
+            Instituto Nacional do Seguro Social
+          </span>
+        </p>
 
-      <button
-        type="button"
-        className="barra-a11y__botao"
-        onClick={alternarContraste}
-        aria-pressed={altoContraste}
-        aria-label={`Alto contraste: ${altoContraste ? "ligado" : "desligado"}`}
-      >
-        <Icone nome="contraste" tamanho={22} />
-        <span aria-hidden="true">Contraste</span>
-        <span aria-hidden="true">{altoContraste ? "Ligado" : "Desligado"}</span>
-      </button>
+        <section className="barra-a11y" aria-label="Opções de acessibilidade">
+          <GrupoOpcoes
+            titulo="Tamanho da letra"
+            variante="pilula"
+            opcoes={TAMANHOS}
+            valor={nivelFonte}
+            aoMudar={definirNivelFonte}
+          />
 
-      <button
-        type="button"
-        className="barra-a11y__botao"
-        onClick={aoPedirLibras}
-      >
-        <Icone nome="libras" tamanho={22} />
-        <span>Libras</span>
-      </button>
-    </nav>
+          <div className="barra-a11y__botoes">
+            <button
+              type="button"
+              className="barra-a11y__botao"
+              onClick={alternarContraste}
+              aria-pressed={altoContraste}
+            >
+              <Icone nome="contraste" tamanho={22} />
+              <span>Alto contraste</span>
+              {/* O estado já é falado pelo aria-pressed ("pressionado");
+                  aqui ele aparece escrito para quem enxerga. O nome do botão
+                  não muda ao alternar, como recomenda o ARIA APG. */}
+              <span className="barra-a11y__estado" aria-hidden="true">
+                {altoContraste ? "Ligado" : "Desligado"}
+              </span>
+            </button>
+
+            <button
+              type="button"
+              className="barra-a11y__botao"
+              onClick={aoPedirLibras}
+            >
+              <Icone nome="libras" tamanho={22} />
+              <span>Libras</span>
+            </button>
+          </div>
+        </section>
+      </div>
+    </section>
   );
 }
