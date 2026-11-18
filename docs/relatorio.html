@@ -23,7 +23,7 @@
   figure { margin: .6em 0 1em; page-break-inside: avoid; }
   figure img { max-width: 100%; max-height: 80mm; width: auto; margin: 0 auto; border: 1px solid var(--borda); border-radius: 8px; display:block; }
   figcaption { font-size: 9pt; color: var(--cinza); margin-top: .3em; }
-  .lado { display:grid; grid-template-columns: 1fr 1fr; gap: 12px; align-items: start; }
+  .lado { display:grid; grid-template-columns: 1fr 1fr; gap: 12px; align-items: start; break-inside: avoid; page-break-inside: avoid; }
   .lado-estreito { display:grid; grid-template-columns: 1.6fr 1fr; gap: 12px; align-items:start; }
   .caixa { background: var(--fundo); border-left: 5px solid var(--azul); padding: .7em 1em; border-radius: 6px; margin: .6em 0 1em; page-break-inside: avoid; }
   .caixa--verde { border-left-color: var(--verde); background:#e6f4ea; }
@@ -41,6 +41,11 @@
   .capa dd { margin:0; }
   .tecla { display:inline-block; border:1px solid #9aa3b2; border-bottom-width:2px; border-radius:4px; padding:0 .35em; font-size:8.5pt; background:#fff; white-space:nowrap; }
   .quebra { page-break-before: always; }
+  .comparacao { display:grid; grid-template-columns: repeat(4, 1fr); gap: 10px; align-items:start; }
+  .comparacao div { display:flex; flex-direction:column; gap:4px; }
+  .comparacao img { width:100%; max-height: 95mm; object-fit: cover; object-position: top; }
+  .comparacao span { font-size: 8.5pt; font-weight:700; color: var(--azul-escuro); text-align:center; }
+  .comparacao figcaption { grid-column: 1 / -1; }
 </style>
 </head>
 <body>
@@ -309,7 +314,82 @@ de Libras com o VLibras oficial e preferências salvas para a próxima visita.</
   <li><strong>Leitor de tela</strong> (roteiro sugerido): NVDA + Firefox/Chrome no Windows, ou TalkBack no Android. Navegar com Tab até “Tamanho da letra” e usar as setas; ir até “Avisos importantes” e trocar de aba; entrar, abrir “Meu benefício” e percorrer o submenu; escolher “Sair da conta” e ouvir o diálogo.</li>
 </ul>
 
-<h2>6. Referências</h2>
+<h2 class="quebra">6. Do protótipo no Figma à versão final</h2>
+<p>O ponto de partida foi um protótipo de celular feito no Figma. Na hora de
+construir o site, revisamos cada tela pensando no público idoso e nos
+componentes WAI-ARIA. As telas de <strong>senha</strong> e da <strong>área
+logada</strong> não estavam no protótipo.</p>
+
+<figure class="comparacao">
+  <div><img src="img/figma-inicio.png" alt="Tela inicial no protótipo do Figma" /><span>Figma — início</span></div>
+  <div><img src="img/final-inicio.png" alt="Tela inicial na versão final" /><span>Final — início</span></div>
+  <div><img src="img/figma-cpf.png" alt="Tela de CPF no protótipo do Figma" /><span>Figma — CPF</span></div>
+  <div><img src="img/final-cpf.png" alt="Tela de CPF na versão final" /><span>Final — CPF</span></div>
+  <figcaption>Protótipo no Figma e versão final, no celular, lado a lado.</figcaption>
+</figure>
+
+<h3>Barra de acessibilidade</h3>
+<table>
+<tr><th style="width:34%">Figma</th><th style="width:38%">Versão final</th><th>Por quê</th></tr>
+<tr><td>Três botões grandes no topo: “A+ Aumentar letra”, “Contraste” e “Libras”</td><td>Faixa fina no estilo gov.br: “gov.br | Instituto Nacional do Seguro Social” e os controles à direita</td><td>A barra ocupava muito espaço e chamava mais atenção que o serviço</td></tr>
+<tr><td>“Aumentar letra” troca de tamanho a cada toque</td><td>Grupo de opções Normal / Grande / Maior, todos visíveis (<code>radiogroup</code>)</td><td>A pessoa vê quantos tamanhos existem e escolhe direto</td></tr>
+<tr><td>“Contraste” muda só de cor quando ligado</td><td>“Alto contraste” com o estado escrito e <code>aria-pressed</code></td><td>Não depender só da cor (WCAG 1.4.1)</td></tr>
+<tr><td>“Libras” sem função</td><td>Abre o VLibras, tradutor oficial do Governo Federal</td><td>Libras funcionando de verdade</td></tr>
+<tr><td>Mesma barra no celular</td><td>No celular, o botão “Acessibilidade” abre um painel com as opções grandes</td><td>Libera o topo da tela</td></tr>
+</table>
+
+<h3>Tela inicial</h3>
+<table>
+<tr><th style="width:45%">Figma</th><th>Versão final</th></tr>
+<tr><td>Logo e título centralizados, em coluna única</td><td>Faixa de destaque com o fio verde, amarelo e azul da marca; duas colunas no computador</td></tr>
+<tr><td>“Ainda não tenho conta: criar agora” como botão contornado</td><td>Link dentro do bloco “O que é a conta gov.br?”</td></tr>
+<tr><td>Passos de entrada em lista numerada simples</td><td>Números em círculos azuis, mais fáceis de acompanhar</td></tr>
+<tr><td><strong>Avisos em carrossel</strong> com Anterior / Próximo e “Aviso 1 de 4”</td><td><strong>Avisos em abas</strong> (<code>tablist</code>), todos os assuntos à vista. O carrossel escondia os avisos seguintes e obrigava a passar um por um</td></tr>
+<tr><td>Seção “Serviços” com “Encontre uma Agência” e “Ver todos os serviços”</td><td>“Serviços que não precisam de senha”, com “Consultar Pedido” no lugar de “Encontre uma Agência”; grade de 3 colunas no computador</td></tr>
+</table>
+
+<h3>Tela de CPF</h3>
+<table>
+<tr><th style="width:45%">Figma</th><th>Versão final</th></tr>
+<tr><td>Título “Digite seu CPF para entrar”</td><td>Título “Entrar no Meu INSS”</td></tr>
+<tr><td>Barra de progresso: “Etapa 1 de 2: CPF · Depois: senha”</td><td>Etapas com círculos numerados (1 CPF → 2 Senha)</td></tr>
+<tr><td>Cabeçalho com a marca gov.br</td><td>Cabeçalho com a logo do INSS e “Meu INSS”</td></tr>
+<tr><td>“Outras formas de entrar” no fim da página, em cartões</td><td><strong>“Como você quer entrar?” no topo</strong>, como grupo de opções (<code>radiogroup</code>) com CPF já marcado</td></tr>
+<tr><td>Link “Onde encontro meu CPF?” acima do botão</td><td>Bloco que abre e fecha, abaixo do botão</td></tr>
+<tr><td>Campo e mensagens soltos na página</td><td>Formulário em cartão branco sobre fundo cinza</td></tr>
+</table>
+
+<div class="lado">
+<div>
+<h3>O que é novo</h3>
+<ul>
+  <li><strong>Tela de senha</strong>, com o CPF confirmado, “Mostrar senha” e o alerta contra golpes.</li>
+  <li><strong>Área logada</strong>, com os serviços e a ajuda da Helô e da Central 135.</li>
+  <li><strong>Menu com subitens</strong> (<code>menubar</code>).</li>
+  <li><strong>Confirmação ao sair</strong> (<code>dialog</code>).</li>
+  <li><strong>Versão para computador</strong>: o Figma tinha só celular.</li>
+  <li>Fonte <strong>Atkinson Hyperlegible</strong> e <strong>rodapé completo</strong>.</li>
+</ul>
+</div>
+<div>
+<h3>O que ficou igual</h3>
+<ul>
+  <li>Cores da marca, botões azuis arredondados e a logo do INSS.</li>
+  <li>Alto contraste em preto e amarelo.</li>
+  <li>Linguagem simples e erro que ensina (“Falta 1 número no CPF…”).</li>
+  <li>Caixa da Central 135 e caixa verde “sem desafios de imagens”.</li>
+</ul>
+<h3>Ficou de fora</h3>
+<ul>
+  <li>“Encontre uma Agência” e “Ver todos os serviços”.</li>
+  <li>Etiqueta “Libera mais serviços” em “Pelo seu banco”.</li>
+  <li>Frase sobre o código por SMS.</li>
+  <li>Número 135 como link de telefone.</li>
+</ul>
+</div>
+</div>
+
+<h2>7. Referências</h2>
 <ul>
   <li>W3C. <em>Web Content Accessibility Guidelines (WCAG) 2.2</em>. https://www.w3.org/TR/WCAG22/</li>
   <li>W3C. <em>Accessible Rich Internet Applications (WAI-ARIA) 1.2</em>. https://www.w3.org/TR/wai-aria-1.2/</li>
