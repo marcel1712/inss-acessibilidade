@@ -52,13 +52,7 @@ export default function App() {
         Ir direto para o conteúdo
       </a>
 
-      <BarraAcessibilidade
-        aoPedirLibras={() =>
-          anunciar(
-            "Tradução em Libras: nesta versão de estudo, o tradutor VLibras ainda não está instalado.",
-          )
-        }
-      />
+      <BarraAcessibilidade />
 
       {/* Região viva única para avisos de sistema (mudou a fonte, o contraste...).
           Fica sempre no DOM: regiões criadas na hora não são anunciadas. */}

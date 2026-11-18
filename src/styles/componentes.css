@@ -11,22 +11,25 @@
   color: var(--cor-texto-suave);
 }
 
-/* =============== Faixa gov.br + barra de acessibilidade =============== */
+/* =============== Faixa gov.br + barra de acessibilidade ===============
+   Computador: uma linha fina e discreta, como no portal gov.br.
+   Celular: só a marca e o botão "Acessibilidade", que abre um painel.
+   Mesmo compactos, os controles têm 48px de altura ou mais. */
 .barra-gov {
-  background: var(--cor-fundo);
-  border-bottom: 1px solid var(--cor-borda-suave);
-  box-shadow: 0 1px 6px rgba(7, 29, 65, 0.06);
   position: relative;
   z-index: 5;
+  background: var(--cor-fundo);
+  border-bottom: 1px solid var(--cor-borda-suave);
 }
 
 .barra-gov__interno {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: wrap; /* com a letra no máximo, os controles descem de linha */
   align-items: center;
   justify-content: space-between;
-  gap: var(--esp-2) var(--esp-5);
-  padding-block: var(--esp-2);
+  gap: var(--esp-1) var(--esp-4);
+  min-height: 3.5rem;
+  padding-block: var(--esp-1);
 }
 
 .barra-gov__marca {
@@ -50,28 +53,40 @@
   color: var(--cor-texto-suave);
 }
 
+@media (max-width: 40rem) {
+  .barra-gov__orgao {
+    display: none;
+  }
+}
+
+/* --- Computador: controles numa linha só --- */
 .barra-a11y {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: var(--esp-2) var(--esp-4);
+  gap: var(--esp-1) var(--esp-2);
 }
 
-.barra-a11y__botoes {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--esp-2);
+.barra-a11y .grupo-opcoes--pilula {
+  padding-right: var(--esp-2);
+  margin-right: var(--esp-1);
+  border-right: 1px solid var(--cor-borda-suave);
+}
+
+.barra-a11y .grupo-opcoes--pilula .grupo-opcoes__titulo {
+  font-weight: var(--peso-medio);
+  color: var(--cor-texto-suave);
 }
 
 .barra-a11y__botao {
-  min-height: var(--alvo-min);
+  min-height: 2.75rem;
   display: inline-flex;
   align-items: center;
   gap: var(--esp-2);
   padding: var(--esp-1) var(--esp-3);
-  background: var(--cor-fundo);
+  background: transparent;
   color: var(--cor-primaria);
-  border: var(--borda-largura) solid var(--cor-primaria);
+  border: var(--borda-largura) solid transparent;
   border-radius: var(--raio-pill);
   font-size: var(--txt-sm);
   font-weight: var(--peso-medio);
@@ -81,34 +96,112 @@
 
 .barra-a11y__botao:hover {
   background: var(--cor-primaria-clara);
+  border-color: var(--cor-primaria-media);
 }
 
 .barra-a11y__estado {
-  padding: 0.1em 0.5em;
+  padding: 0.1em 0.55em;
   border-radius: var(--raio-pill);
-  background: var(--cor-primaria-clara);
+  background: var(--cor-fundo-alt);
+  border: 1px solid var(--cor-borda-suave);
+  color: var(--cor-texto-suave);
   font-size: var(--txt-xs);
   font-weight: var(--peso-forte);
 }
 
-.barra-a11y__botao[aria-pressed="true"] {
+.barra-a11y__botao[aria-pressed="true"] .barra-a11y__estado {
+  background: var(--cor-primaria);
+  border-color: var(--cor-primaria);
+  color: var(--cor-sobre-primaria);
+}
+
+/* Pílulas do tamanho da letra, versão compacta */
+.barra-a11y .grupo-opcoes--pilula .grupo-opcoes__lista {
+  border: 1px solid var(--cor-borda);
+  background: var(--cor-fundo-alt);
+}
+
+.barra-a11y .grupo-opcoes--pilula .opcao-radio {
+  min-height: 2.5rem;
+  background: transparent;
+  color: var(--cor-texto);
+}
+
+.barra-a11y .grupo-opcoes--pilula .opcao-radio[aria-checked="true"] {
   background: var(--cor-primaria);
   color: var(--cor-sobre-primaria);
 }
 
-.barra-a11y__botao[aria-pressed="true"] .barra-a11y__estado {
-  background: var(--cor-sobre-primaria);
+/* --- Celular: botão que abre o painel (disclosure) --- */
+.barra-a11y__abrir {
+  min-height: var(--alvo-min);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--esp-2);
+  padding: var(--esp-1) var(--esp-3) var(--esp-1) var(--esp-2);
+  background: var(--cor-fundo);
   color: var(--cor-primaria);
+  border: var(--borda-largura) solid var(--cor-primaria);
+  border-radius: var(--raio-pill);
+  font-size: var(--txt-sm);
+  font-weight: var(--peso-forte);
+  cursor: pointer;
 }
 
-/* No celular a marca ocupa uma linha e os controles ficam embaixo */
-@media (max-width: 47.99rem) {
-  .barra-gov__orgao {
-    display: none;
-  }
-  .barra-a11y {
-    width: 100%;
-  }
+.barra-a11y__abrir:hover {
+  background: var(--cor-primaria-clara);
+}
+
+.barra-a11y__abrir[aria-expanded="true"] {
+  background: var(--cor-primaria);
+  color: var(--cor-sobre-primaria);
+}
+
+.barra-a11y__seta {
+  display: inline-flex;
+  transition: transform 0.2s ease-out;
+}
+
+.barra-a11y__abrir[aria-expanded="true"] .barra-a11y__seta {
+  transform: rotate(180deg);
+}
+
+.barra-a11y-painel {
+  background: var(--cor-fundo-alt);
+  border-top: 1px solid var(--cor-borda-suave);
+  box-shadow: inset 0 4px 8px -6px rgba(7, 29, 65, 0.2);
+}
+
+.barra-a11y-painel__interno {
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-3);
+  padding-block: var(--esp-4);
+}
+
+.barra-a11y-painel .grupo-opcoes--pilula {
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.barra-a11y-painel .grupo-opcoes__lista {
+  background: var(--cor-fundo);
+}
+
+.barra-a11y-painel .opcao-radio {
+  min-height: var(--alvo-min);
+}
+
+.barra-a11y-painel .barra-a11y__botao {
+  min-height: var(--alvo-min);
+  justify-content: flex-start;
+  background: var(--cor-fundo);
+  border-color: var(--cor-primaria);
+  border-radius: var(--raio);
+}
+
+.barra-a11y-painel .barra-a11y__estado {
+  margin-left: auto;
 }
 
 /* =============== Grupo de opções (role="radiogroup") =============== */
