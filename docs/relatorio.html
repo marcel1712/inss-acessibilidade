@@ -279,6 +279,8 @@ senha de novo — uma tarefa difícil para muitos idosos (WCAG 3.3.4, prevençã
 <table>
 <tr><th style="width:32%">Onde</th><th>Atributos</th><th>Para quê</th></tr>
 <tr><td>Acordeões (“O que é a conta gov.br?”, “Onde encontro o meu CPF?”)</td><td><code>aria-expanded</code>, <code>aria-controls</code></td><td>Padrão <em>Disclosure</em>: informa se o bloco está aberto ou fechado.</td></tr>
+<tr><td>Botão “Acessibilidade” no celular</td><td><code>aria-expanded</code>, <code>aria-controls</code></td><td>Padrão <em>Disclosure</em>: no celular, as opções de letra, contraste e Libras ficam num painel que abre e fecha; Esc fecha e devolve o foco ao botão. No computador, as opções ficam numa linha fina no topo, como no portal gov.br.</td></tr>
+<tr><td>Botão “Libras”</td><td>—</td><td>Abre o <strong>VLibras</strong>, tradutor oficial do Governo Federal, que traduz o texto da página para Libras com um avatar 3D.</td></tr>
 <tr><td>Botão “Alto contraste”</td><td><code>aria-pressed</code></td><td>Botão alternador: “Alto contraste, botão de alternância, pressionado”. O nome não muda ao alternar, como recomenda o APG.</td></tr>
 <tr><td>Botão “Menu” no celular e “Mostrar senha”</td><td><code>aria-expanded</code>, <code>aria-pressed</code></td><td>Estado do menu aberto / senha visível.</td></tr>
 <tr><td>Campos de CPF e senha</td><td><code>aria-describedby</code>, <code>aria-invalid</code>, <code>role="alert"</code></td><td>A dica e o erro são lidos junto com o campo; o erro é anunciado assim que aparece.</td></tr>
@@ -297,7 +299,7 @@ senha de novo — uma tarefa difícil para muitos idosos (WCAG 3.3.4, prevençã
 </table>
 <p>Também seguimos recomendações do <strong>eMAG 3.1</strong>: barra de acessibilidade
 no topo com contraste e tamanho de letra (1.9), atalho para o conteúdo (1.5), botão
-de Libras/VLibras e preferências salvas para a próxima visita.</p>
+de Libras com o VLibras oficial e preferências salvas para a próxima visita.</p>
 
 <h2>5. Como testamos</h2>
 <ul>

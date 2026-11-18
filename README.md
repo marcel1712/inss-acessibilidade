@@ -74,7 +74,7 @@ A explicação detalhada está no relatório [docs/relatorio-acessibilidade.pdf]
 | Abas | Avisos importantes (tela inicial) | `tablist`, `tab`, `tabpanel`, `aria-selected`, `aria-controls` | [Avisos.jsx](src/componentes/Avisos.jsx) |
 | Diálogo modal | Confirmação "Quer mesmo sair da conta?" | `dialog`, `aria-modal`, `aria-labelledby`, `aria-describedby` | [Dialogo.jsx](src/componentes/Dialogo.jsx) |
 
-Também: acordeão (`aria-expanded` + `aria-controls`), alternador de contraste
+Também: painel "Acessibilidade" no celular e acordeão (disclosure, `aria-expanded` + `aria-controls`), alternador de contraste
 (`aria-pressed`), região viva (`aria-live`, `role="alert"`) e campos com
 `aria-describedby` / `aria-invalid`.
 
@@ -99,6 +99,10 @@ Também: acordeão (`aria-expanded` + `aria-controls`), alternador de contraste
 - **Link "Ir direto para o conteúdo"** como primeiro item tabulável.
 - **Nada se move sozinho**: os avisos ficam em abas e só trocam quando a
   pessoa escolhe (WCAG 2.2.2). Nenhum tempo limite.
+- **Libras com o VLibras**, o tradutor oficial do Governo Federal: o botão
+  "Libras" da barra abre o intérprete (script carregado em `index.html`).
+- **Barra de acessibilidade discreta**: uma linha fina no computador; no
+  celular, um botão "Acessibilidade" abre as opções em tamanho grande.
 - **Fonte Atkinson Hyperlegible**, criada para leitores com baixa visão
   (diferencia bem I/l/1 e 0/O — útil para CPF).
 - `prefers-reduced-motion` desliga as transições.
@@ -139,9 +143,6 @@ Também: acordeão (`aria-expanded` + `aria-controls`), alternador de contraste
 
 ## O que ficou de fora (e por quê)
 
-- **VLibras**: o botão existe e anuncia que o tradutor não está instalado
-  nesta versão de estudo. Em produção, carrega-se o widget oficial de
-  `vlibras.gov.br`.
 - **Back-end**: o login é simulado. Com CPF válido, a tela só confirma que a
   próxima etapa é a senha.
 # inss-acessibilidade
