@@ -52,7 +52,7 @@ src/
 │   ├── Passos.jsx               "Etapa 1 de 2"
 │   ├── ListaServicos.jsx        lista semântica de serviços
 │   ├── Icone.jsx                SVGs decorativos (aria-hidden)
-│   ├── LogoINSS.jsx             marca com role="img"
+│   ├── LogoINSS.jsx             marca do INSS (imagem com alt)
 │   └── Rodape.jsx
 ├── paginas/
 ├── utilidades/cpf.js          máscara e validação com mensagens úteis

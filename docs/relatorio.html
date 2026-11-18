@@ -46,7 +46,7 @@
 <body>
 
 <section class="capa">
-  <img src="../public/favicon.svg" alt="Marca do INSS" style="width:150px" />
+  <img src="../src/assets/logo-inss.webp" alt="Marca do INSS" style="width:150px" />
   <div class="faixa"></div>
   <h1>Meu INSS acessível</h1>
   <p class="sub">Releitura das telas de entrada do Meu INSS para o público idoso, com
@@ -285,7 +285,7 @@ senha de novo — uma tarefa difícil para muitos idosos (WCAG 3.3.4, prevençã
 <tr><td>Botão “Menu” no celular e “Mostrar senha”</td><td><code>aria-expanded</code>, <code>aria-pressed</code></td><td>Estado do menu aberto / senha visível.</td></tr>
 <tr><td>Campos de CPF e senha</td><td><code>aria-describedby</code>, <code>aria-invalid</code>, <code>role="alert"</code></td><td>A dica e o erro são lidos junto com o campo; o erro é anunciado assim que aparece.</td></tr>
 <tr><td>Avisos de sistema</td><td><code>role="status"</code> + <code>aria-live="polite"</code></td><td>Anuncia mudanças sem foco próprio: entrou, saiu, contraste ligado.</td></tr>
-<tr><td>Marca do INSS e ícones</td><td><code>role="img"</code> + <code>aria-label</code>; <code>aria-hidden</code></td><td>A marca é imagem com nome; ícones ao lado de texto são escondidos para não repetir.</td></tr>
+<tr><td>Marca do INSS e ícones</td><td><code>alt</code>; <code>aria-hidden</code></td><td>A marca tem texto alternativo (ou <code>alt=""</code> quando o nome “Meu INSS” já está escrito ao lado); ícones ao lado de texto são escondidos para não repetir.</td></tr>
 <tr><td>Botão “Avisos” com selo “1”</td><td><code>aria-label="Avisos: 1 não lido"</code></td><td>O número do selo é só visual; o nome falado inclui a contagem.</td></tr>
 </table>
 
